@@ -1,0 +1,45 @@
+
+# 端口
+server:
+  port: 6061
+
+# 服务名称
+spring:
+  application:
+    name: user-service
+
+  cloud:
+    # nacos
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  # 数据库
+  datasource:
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
+    url: jdbc:p6spy:mysql://47.100.93.25:3306/pinellia?useUnicode=true&useSSL=false&characterEncoding=utf8
+    username: root
+    password: aini1314liliqun
+    type: com.zaxxer.hikari.HikariDataSource
+
+# flowable配置
+flowable:
+  async-executor-activate: false
+  database-schema-update: true
+
+
+# mybatis-plus的配置
+mybatis-plus:
+  type-aliases-package: com.ivan.pinellia.entity
+  mapper-locations: classpath:/xml/*Mapper.xml
+
+
+# 端点配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  endpoint:
+    health:
+      show-details: always

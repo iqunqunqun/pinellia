@@ -1,0 +1,59 @@
+server:
+  port: 6666
+
+
+
+spring:
+  application:
+    name: gateway
+
+
+  cloud:
+    gateway:
+      discovery:
+        locator:
+#          enabled: false
+          lowerCaseServiceId: true
+      # 路由
+
+      routes:
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path= /api/**
+          filters:
+            - StripPrefix=1
+
+    # 负载均衡重试
+    loadbalancer:
+      retry:
+        enabled: true
+
+
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+  # redis
+  redis:
+    host: 47.100.93.25
+    port: 6379
+    password:
+
+logging:
+  level:
+    org.springframework:cloud.gateway: debug
+
+
+
+
+# 端点配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  endpoint:
+    health:
+      show-details: always

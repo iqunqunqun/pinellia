@@ -1,0 +1,31 @@
+server:
+  port: 6063
+
+spring:
+  application:
+    name: auth-service
+
+  cloud:
+    # nacos
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+
+  # 数据库
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://47.100.93.25:3306/pinellia?useUnicode=true&useSSL=false&characterEncoding=utf8
+    username: root
+    password: aini1314liliqun
+    type: com.zaxxer.hikari.HikariDataSource
+
+# 端点配置
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+  endpoint:
+    health:
+      show-details: always

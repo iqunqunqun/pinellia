@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ivan.pinellia.mapper.MenuMapper">
+
+    <select id="selectMenuPage" resultType="com.ivan.pinellia.vo.MenuVO">
+        select * from pinellia_menu where is_deleted = 0
+    </select>
+
+    <select id="tree" resultType="com.ivan.pinellia.vo.MenuVO">
+        select menu_id as 'id', parent_id, name as title, menu_id as 'value', menu_id as 'key' from pinellia_menu where is_deleted = 0 and category = 1
+    </select>
+
+    <select id="allMenu" resultType="com.ivan.pinellia.entity.Menu">
+        select * from pinellia_menu where is_deleted = 0 and category = 1
+    </select>
+
+    <select id="roleMenu" resultType="com.ivan.pinellia.entity.Menu">
+        select * from pinellia_menu where is_deleted = 0 and menu_id IN ( SELECT menu_id FROM pinellia_role_menu WHERE
+        role_id IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="routes" resultType="com.ivan.pinellia.entity.Menu">
+        SELECT
+        *
+        FROM
+        pinellia_menu
+        WHERE
+        is_deleted = 0 and category = 1
+        and menu_id IN ( SELECT menu_id FROM pinellia_role_menu WHERE role_id IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="buttons" resultType="com.ivan.pinellia.entity.Menu">
+        SELECT
+        menu_id,
+        parent_id,
+        `code`,
+        `name`,
+        alias,
+        path,
+        source,
+        action,
+        sort
+        FROM
+        pinellia_menu
+        WHERE
+        is_deleted = 0 and menu_id IN (
+        SELECT parent_id FROM pinellia_menu
+        WHERE ( category = 2 AND menu_id IN ( SELECT menu_id FROM pinellia_role_menu WHERE role_id IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        ) ) )
+
+        UNION ALL
+
+        SELECT
+        menu_id,
+        parent_id,
+        `code`,
+        `name`,
+        alias,
+        path,
+        source,
+        action,
+        sort
+        FROM
+        pinellia_menu
+        WHERE
+        is_deleted = 0 and category = 2 AND menu_id IN ( SELECT menu_id FROM pinellia_role_menu WHERE role_id IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>)
+    </select>
+
+    <select id="grantTree" resultType="com.ivan.pinellia.vo.MenuVO">
+        select menu_id as 'id', parent_id, name as title, menu_id as 'value', menu_id as 'key' from pinellia_menu where is_deleted = 0
+    </select>
+
+    <select id="grantTreeByRole" resultType="com.ivan.pinellia.vo.MenuVO">
+        select menu_id, as 'id' parent_id, name as title, menu_id as 'value', menu_id as 'key' from pinellia_menu where
+        is_deleted = 0
+        and menu_id in ( select menu_id from pinellia_role_menu where role_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+        or menu_id in (
+        select parent_id from pinellia_menu where is_deleted = 0
+        and menu_id in ( select menu_id from pinellia_role_menu where role_id in
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        )
+        )
+    </select>
+
+    <select id="authRoutes" resultType="com.ivan.pinellia.dto.MenuDTO">
+        SELECT
+        GROUP_CONCAT(r.role_alias) as alias,
+        m.path
+        FROM
+        pinellia_role_menu rm
+        LEFT JOIN pinellia_menu m ON rm.menu_id = m.menu_id
+        LEFT JOIN pinellia_role r ON rm.role_id = r.role_id
+        WHERE
+        rm.role_id IN
+        <foreach collection="list" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND m.path IS NOT NULL and m.is_deleted = 0
+        GROUP BY m.path
+    </select>
+</mapper>

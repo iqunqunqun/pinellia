@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ivan.pinellia.mapper.UserMapper">
+
+    <select id="getRoleName" resultType="java.lang.String">
+        SELECT
+        role_name
+        FROM
+        pinellia_role
+        WHERE
+        role_id IN
+        <foreach collection="array" item="ids" index="index" open="(" close=")" separator=",">
+            #{ids}
+        </foreach>
+        and is_deleted = 0
+    </select>
+
+    <select id="getDeptName" resultType="java.lang.String">
+        SELECT
+        dept_name
+        FROM
+        pinellia_dept
+        WHERE
+        dept_id IN
+        <foreach collection="array" item="ids" index="index" open="(" close=")" separator=",">
+            #{ids}
+        </foreach>
+        and is_deleted = 0
+    </select>
+
+</mapper>

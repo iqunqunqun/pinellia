@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ivan.pinellia.mapper.RoleMapper">
+
+    <select id="tree" resultType="com.ivan.pinellia.vo.RoleVO">
+        select role_id as 'id', parent_id, role_name, role_id as 'value', role_id as 'key' from pinellia_role where
+        is_deleted = 0
+        <if test="excludeRole != null">
+            and role_alias &lt;&gt; #{excludeRole}
+        </if>
+    </select>
+
+</mapper>
