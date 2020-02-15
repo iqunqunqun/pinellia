@@ -1,2 +1,2 @@
 # pinellia
-半夏
+pinellia
