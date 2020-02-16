@@ -9,6 +9,7 @@ import com.ivan.pinellia.entity.User;
 import com.ivan.pinellia.service.IUserService;
 import com.ivan.pinellia.tool.api.R;
 import com.ivan.pinellia.tool.utils.Func;
+import com.ivan.pinellia.vo.DeptVO;
 import com.ivan.pinellia.vo.UserVO;
 import com.ivan.pinellia.wrapper.UserWrapper;
 import io.swagger.annotations.Api;

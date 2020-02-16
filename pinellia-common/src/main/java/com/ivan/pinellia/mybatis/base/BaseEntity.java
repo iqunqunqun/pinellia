@@ -21,12 +21,6 @@ import java.util.Date;
 public class BaseEntity implements Serializable {
 
     /**
-     * 创建人
-     */
-    @ApiModelProperty(value = "创建人")
-    private Integer createUser;
-
-    /**
      * 创建时间
      */
     @DateTimeFormat(pattern = DateUtil.PATTERN_DATETIME)
@@ -34,11 +28,6 @@ public class BaseEntity implements Serializable {
     @ApiModelProperty(value = "创建时间")
     private LocalDateTime createTime;
 
-    /**
-     * 更新人
-     */
-    @ApiModelProperty(value = "更新人")
-    private Integer updateUser;
 
     /**
      * 更新时间

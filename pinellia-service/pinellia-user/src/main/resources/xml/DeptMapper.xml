@@ -2,4 +2,22 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ivan.pinellia.mapper.DeptMapper">
 
+    <select id="tree" resultType="com.ivan.pinellia.vo.DeptVO">
+        SELECT
+            dept_id AS id,
+            parent_id,
+            dept_name AS title,
+            dept_id AS `value`,
+            dept_id AS `key`,
+            pinellia_dept.dept_id,
+            pinellia_dept.parent_id,
+            pinellia_dept.dept_name,
+            pinellia_dept.full_name,
+            pinellia_dept.sort
+        FROM
+            pinellia_dept
+        WHERE
+            is_deleted = 0
+    </select>
+
 </mapper>

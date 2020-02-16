@@ -2,6 +2,9 @@ package com.ivan.pinellia.mapper;
 
 import com.ivan.pinellia.entity.Dept;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.ivan.pinellia.vo.DeptVO;
+
+import java.util.List;
 
 /**
  * <p>
@@ -13,4 +16,10 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  */
 public interface DeptMapper extends BaseMapper<Dept> {
 
+    /**
+     * 获取树形节点
+     *
+     * @return
+     */
+    List<DeptVO> tree();
 }
