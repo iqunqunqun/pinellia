@@ -39,6 +39,7 @@
         <knife4j.version>2.0.1</knife4j.version>
         <spring.boot.admin.version>2.2.0</spring.boot.admin.version>
         <jwt.version>0.9.1</jwt.version>
+        <easy.excel.version>2.1.6</easy.excel.version>
     </properties>
 
     <dependencyManagement>
@@ -123,6 +124,15 @@
                 <artifactId>p6spy</artifactId>
                 <version>${p6spy.version}</version>
             </dependency>
+
+
+            <!-- easy excel -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>easyexcel</artifactId>
+                <version>${easy.excel.version}</version>
+            </dependency>
+
 
             <!--swagger-->
             <dependency>

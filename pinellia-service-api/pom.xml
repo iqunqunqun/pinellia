@@ -35,6 +35,13 @@
             <artifactId>mybatis-plus-boot-starter</artifactId>
         </dependency>
 
+        <!-- easy excel -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>${easy.excel.version}</version>
+        </dependency>
+
         <!--pinellia-common-->
         <dependency>
             <groupId>com.ivan</groupId>
