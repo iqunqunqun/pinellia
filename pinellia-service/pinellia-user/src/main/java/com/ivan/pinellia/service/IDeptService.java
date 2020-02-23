@@ -4,8 +4,9 @@ import com.ivan.pinellia.entity.Dept;
 import com.ivan.pinellia.entity.User;
 import com.ivan.pinellia.mybatis.base.BaseService;
 import com.ivan.pinellia.vo.DeptVO;
-import com.ivan.pinellia.vo.UserVO;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -42,4 +43,24 @@ public interface IDeptService extends BaseService<Dept> {
      * @since 2020/2/15 9:24 下午
      */
     List<User> allDept(Integer deptId);
+
+    /**
+     *
+     * 導出部門Excel
+     * @date 2020/2/22 12:41 下午
+     * @param response:
+     * @return void
+     * @author chenyifan
+     */
+    void exportExcel(HttpServletResponse response);
+
+    /**
+     *
+     * 导入Excel
+     * @date 2020/2/22 5:32 下午
+     * @param file:
+     * @return void
+     * @author chenyifan
+     */
+    void importExcel(MultipartFile file);
 }

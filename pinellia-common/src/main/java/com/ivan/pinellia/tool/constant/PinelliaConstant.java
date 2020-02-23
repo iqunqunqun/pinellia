@@ -14,6 +14,11 @@ public interface PinelliaConstant {
     String UTF_8 = "UTF-8";
 
     /**
+     * excel type
+     */
+    String EXCEL_TYPE = "application/vnd.ms-excel";
+
+    /**
      * contentType
      */
     String CONTENT_TYPE_NAME = "Content-type";

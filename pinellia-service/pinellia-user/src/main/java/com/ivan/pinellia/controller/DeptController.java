@@ -20,8 +20,10 @@ import io.swagger.models.auth.In;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.web.multipart.MultipartFile;
 import springfox.documentation.annotations.ApiIgnore;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -122,6 +124,20 @@ public class DeptController {
     public R allStaff(@RequestParam("deptId") Integer deptId) {
         List<User> users = this.deptService.allDept(deptId);
         return R.data(UserWrapper.build().listVO(users));
+    }
+
+    @ApiOperation("測試Excel")
+    @ApiOperationSupport(order = 7)
+    @GetMapping("/exportExcel")
+    public void exportExcel(HttpServletResponse response) {
+        this.deptService.exportExcel(response);
+    }
+
+    @ApiOperation("导入Excel")
+    @ApiOperationSupport(order = 8)
+    @PostMapping("/importExcel")
+    public void importExcel(@RequestPart MultipartFile file) {
+        this.deptService.importExcel(file);
     }
 }
 

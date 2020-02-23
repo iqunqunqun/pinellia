@@ -57,6 +57,8 @@ public interface StringPool {
 	String UNDERSCORE = "_";
 	String UTF_8 = "UTF-8";
 	String GBK = "GBK";
+	String XLSX = ".xlsx";
+	String XLS = ".xls";
 	String ISO_8859_1 = "ISO-8859-1";
 	String Y = "y";
 	String YES = "yes";
