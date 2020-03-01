@@ -3,7 +3,7 @@ package com.ivan.pinellia.wrapper;
 import cn.hutool.core.util.ObjectUtil;
 import com.google.common.collect.Lists;
 import com.ivan.pinellia.entity.Menu;
-import com.ivan.pinellia.feign.IDictClient;
+import com.ivan.pinellia.feign.IUserClient;
 import com.ivan.pinellia.mybatis.support.BaseEntityWrapper;
 import com.ivan.pinellia.service.IMenuService;
 import com.ivan.pinellia.tool.api.R;
@@ -28,11 +28,11 @@ public class MenuWrapper extends BaseEntityWrapper<Menu, MenuVO> {
 
     private static IMenuService menuService;
 
-    private static IDictClient dictClient;
+    private static IUserClient dictClient;
 
     static {
         menuService = SpringUtil.getBean(IMenuService.class);
-        dictClient = SpringUtil.getBean(IDictClient.class);
+        dictClient = SpringUtil.getBean(IUserClient.class);
     }
 
     public static MenuWrapper build() {

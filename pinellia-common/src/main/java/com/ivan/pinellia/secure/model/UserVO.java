@@ -1,32 +1,26 @@
-package com.ivan.pinellia.entity;
+package com.ivan.pinellia.secure.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
-
-import java.time.LocalDateTime;
-import java.io.Serializable;
-
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.baomidou.mybatisplus.annotation.TableName;
-import com.ivan.pinellia.mybatis.base.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDateTime;
+
 /**
- * <p>
- * 用户表
- * </p>
- *
- * @author ivan
- * @since 2019-12-29
+ * @author chenyf
+ * @program: pinellia
+ * @description: 用户返回对象
+ * @create 2020-01-05 3:10 下午
  */
+
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("pinellia_user")
-public class User extends BaseEntity implements Serializable {
+public class UserVO {
 
     private static final long serialVersionUID = 1L;
 
@@ -97,4 +91,27 @@ public class User extends BaseEntity implements Serializable {
     @TableLogic
     @ApiModelProperty(value = "是否已删除")
     private Integer isDeleted;
+
+    /**
+     * 主键ID
+     */
+    private Integer id;
+
+    /**
+     * 角色名
+     */
+    private String roleName;
+
+    /**
+     * 部门名
+     */
+    private String deptName;
+
+    /**
+     * 性别
+     */
+    private String sexName;
+
+
+
 }

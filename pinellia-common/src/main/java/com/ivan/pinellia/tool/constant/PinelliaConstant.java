@@ -14,6 +14,11 @@ public interface PinelliaConstant {
     String UTF_8 = "UTF-8";
 
     /**
+     * header Bearer
+     */
+    String BEARER = "Bearer";
+
+    /**
      * excel type
      */
     String EXCEL_TYPE = "application/vnd.ms-excel";

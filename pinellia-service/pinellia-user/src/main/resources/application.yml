@@ -35,7 +35,7 @@ flowable:
     app:
       authentication-mode: verify-privilege
   process:
-    definition-cache-limit: 1
+    definition-cache-limit: 10
   idm:
     app:
       admin:
@@ -48,8 +48,7 @@ flowable:
     app:
       role-prefix:
       idm-url: http://localhost:${server.port}/${spring.application.name}/idm
-  xml:
-    encoding: UTF-8
+
   modeler:
     app:
       rest-enabled: true
@@ -115,6 +114,7 @@ flowable:
           name: Flowable Content app
           description: Flowable Content REST config
   database-schema-update: true
+  async-executor-activate: false
 
 
 # mybatis-plus的配置

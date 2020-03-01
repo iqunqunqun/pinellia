@@ -4,6 +4,7 @@ package com.ivan.pinellia.controller;
 
 
 
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.ivan.pinellia.entity.User;
 import com.ivan.pinellia.service.IUserService;
@@ -45,6 +46,7 @@ public class UserController {
     public R<UserVO> detail(@PathVariable("uid") Integer uid) {
         return R.data(UserWrapper.build().entityVO(this.userService.getUserDetailById(uid)));
     }
+
 
     /**
      * 新增或修改
@@ -90,6 +92,14 @@ public class UserController {
                    @ApiParam(value = "roleId集合", required = true) @RequestParam String roleIds) {
         boolean temp = userService.grant(userIds, roleIds);
         return R.status(temp);
+    }
+
+    @ApiOperation("/根据账号查询用户")
+    @ApiOperationSupport(order = 6)
+    @GetMapping("/detailByAccount")
+    public R<User> detailByAccount(@RequestParam String account) {
+        User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getAccount, account).eq(User::getIsDeleted, 0));
+        return R.data(UserWrapper.build().entityVO(user));
     }
 }
 

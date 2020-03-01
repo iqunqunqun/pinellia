@@ -135,6 +135,12 @@
                 <version>${flowable.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>org.flowable</groupId>
+                <artifactId>flowable-ui-idm-rest</artifactId>
+                <version>${flowable.version}</version>
+            </dependency>
+
             <!--hutool-->
             <dependency>
                 <groupId>cn.hutool</groupId>

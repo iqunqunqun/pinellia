@@ -17,7 +17,6 @@ spring:
     url: jdbc:mysql://47.100.93.25:3306/pinellia?useUnicode=true&useSSL=false&characterEncoding=utf8
     username: root
     password: aini1314liliqun
-    type: com.zaxxer.hikari.HikariDataSource
 
 # 端点配置
 management:

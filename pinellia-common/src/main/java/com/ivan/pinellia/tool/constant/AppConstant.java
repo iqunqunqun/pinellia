@@ -14,8 +14,8 @@ public interface AppConstant {
     String APPLICATION_AUTH_NAME = "blade-auth";
     String APPLICATION_ADMIN_NAME = "blade-admin";
     String APPLICATION_DESK_NAME = "blade-desk";
-    String APPLICATION_SYSTEM_NAME = "blade-system";
-    String APPLICATION_USER_NAME = "blade-user";
+    String APPLICATION_SYSTEM_NAME = "pinellia-system";
+    String APPLICATION_USER_NAME = "pinellia-user";
     String APPLICATION_LOG_NAME = "blade-log";
     String APPLICATION_DEVELOP_NAME = "blade-develop";
     String APPLICATION_RESOURCE_NAME = "blade-resource";

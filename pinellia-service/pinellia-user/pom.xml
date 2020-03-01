@@ -87,19 +87,21 @@
         <dependency>
             <groupId>org.flowable</groupId>
             <artifactId>flowable-ui-task-conf</artifactId>
-            <version>${flowable.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.flowable</groupId>
             <artifactId>flowable-ui-admin-conf</artifactId>
-            <version>${flowable.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.flowable</groupId>
             <artifactId>flowable-ui-idm-conf</artifactId>
-            <version>${flowable.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.flowable</groupId>
+            <artifactId>flowable-ui-idm-rest</artifactId>
         </dependency>
 
         <!--hutool-->
