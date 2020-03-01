@@ -80,7 +80,7 @@ public class SwaggerConfiguration {
         AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
-        return Lists.newArrayList(new SecurityReference("BearerToken1", authorizationScopes));
+        return Lists.newArrayList(new SecurityReference("Authorization", authorizationScopes));
     }
 
 }
