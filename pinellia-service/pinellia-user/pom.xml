@@ -20,6 +20,12 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
 
+        <!--kafka-->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+
         <!-- 引入热部署jar包 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

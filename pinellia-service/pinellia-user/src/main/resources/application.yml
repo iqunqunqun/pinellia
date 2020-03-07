@@ -25,6 +25,28 @@ spring:
       name: admin
       password: 123456
 
+  # kafka设置
+  kafka:
+    bootstrap-servers: 47.100.93.25:9092
+
+    producer:
+      retries: 0
+      batch-size: 16384
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        linger.ms: 1
+
+    consumer:
+      enable-auto-commit: false
+      auto-commit-interval: 100ms
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # 指定默认消费者group id
+      properties:
+        session.timeout.ms: 15000
+      group-id: test-consumer-group
 
 # flowable配置
 flowable:
@@ -121,6 +143,7 @@ flowable:
 mybatis-plus:
   type-aliases-package: com.ivan.pinellia.entity
   mapper-locations: classpath:/xml/*Mapper.xml
+
 
 
 # 端点配置
