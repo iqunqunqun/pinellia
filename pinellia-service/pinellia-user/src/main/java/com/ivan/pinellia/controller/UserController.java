@@ -7,8 +7,11 @@ package com.ivan.pinellia.controller;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.ivan.pinellia.entity.User;
+import com.ivan.pinellia.kafka.producer.KafkaProducer;
 import com.ivan.pinellia.service.IUserService;
 import com.ivan.pinellia.tool.api.R;
+import com.ivan.pinellia.tool.constant.KafkaConstant;
+import com.ivan.pinellia.tool.json.JsonUtil;
 import com.ivan.pinellia.tool.utils.Func;
 import com.ivan.pinellia.vo.DeptVO;
 import com.ivan.pinellia.vo.UserVO;
@@ -39,6 +42,9 @@ public class UserController {
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private KafkaProducer producer;
 
     @ApiOperationSupport(order = 1)
     @ApiOperation("获取用户详情")
@@ -100,6 +106,16 @@ public class UserController {
     public R<User> detailByAccount(@RequestParam String account) {
         User user = userService.getOne(Wrappers.<User>lambdaQuery().eq(User::getAccount, account).eq(User::getIsDeleted, 0));
         return R.data(UserWrapper.build().entityVO(user));
+    }
+
+    @ApiOperation("发送kafka消息")
+    @ApiOperationSupport(order = 7)
+    @GetMapping("/sendMsg")
+    public R<String> sendMsg(@RequestParam("id") Integer id) {
+
+        User user = this.userService.getById(id);
+        producer.sendMessage(KafkaConstant.USER_TOPIC, JsonUtil.toJson(user));
+        return R.data("成功啦");
     }
 }
 

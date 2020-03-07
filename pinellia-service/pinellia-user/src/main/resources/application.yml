@@ -16,10 +16,10 @@ spring:
   # 数据库
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    url: jdbc:p6spy:mysql://47.100.93.25:3306/pinellia?useUnicode=true&useSSL=false&characterEncoding=utf8
+    url: jdbc:p6spy:mysql://47.100.93.25:13306/pinellia?useUnicode=true&useSSL=false&characterEncoding=utf8
     username: root
     password: aini1314liliqun
-    type: com.zaxxer.hikari.HikariDataSource
+
   security:
     user:
       name: admin
@@ -28,7 +28,6 @@ spring:
   # kafka设置
   kafka:
     bootstrap-servers: 47.100.93.25:9092
-
     producer:
       retries: 0
       batch-size: 16384
@@ -46,7 +45,9 @@ spring:
       # 指定默认消费者group id
       properties:
         session.timeout.ms: 15000
-      group-id: test-consumer-group
+    listener:
+      missing-topics-fatal: false
+
 
 # flowable配置
 flowable:
@@ -137,13 +138,15 @@ flowable:
           description: Flowable Content REST config
   database-schema-update: true
   async-executor-activate: false
+  task:
+    app:
+      kafka-enabled: true
 
 
 # mybatis-plus的配置
 mybatis-plus:
   type-aliases-package: com.ivan.pinellia.entity
   mapper-locations: classpath:/xml/*Mapper.xml
-
 
 
 # 端点配置

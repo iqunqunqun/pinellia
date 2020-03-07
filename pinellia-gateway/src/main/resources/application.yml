@@ -42,8 +42,8 @@ spring:
   # redis
   redis:
     host: 47.100.93.25
-    port: 6379
-    password:
+    port: 16379
+    password: aini1314liliqun
 
 logging:
   level:

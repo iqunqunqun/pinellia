@@ -292,7 +292,6 @@ public class JsonUtil {
 			//序列化处理
 			super.configure(JsonReadFeature.ALLOW_UNESCAPED_CONTROL_CHARS.mappedFeature(), true);
 			super.configure(JsonReadFeature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER.mappedFeature(), true);
-			super.findAndRegisterModules();
 			//失败处理
 			super.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 			super.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -302,7 +301,6 @@ public class JsonUtil {
 			super.getDeserializationConfig().withoutFeatures(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 			//日期格式化
 			super.registerModule(new PinelliaJavaTimeModule());
-			super.findAndRegisterModules();
 		}
 
 		@Override
