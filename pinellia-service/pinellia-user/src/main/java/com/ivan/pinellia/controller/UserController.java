@@ -6,8 +6,11 @@ package com.ivan.pinellia.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
+import com.google.common.collect.Lists;
+import com.ivan.pinellia.entity.Dept;
 import com.ivan.pinellia.entity.User;
 import com.ivan.pinellia.kafka.producer.KafkaProducer;
+import com.ivan.pinellia.service.IDeptService;
 import com.ivan.pinellia.service.IUserService;
 import com.ivan.pinellia.tool.api.R;
 import com.ivan.pinellia.tool.constant.KafkaConstant;
@@ -24,6 +27,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <p>
@@ -45,6 +50,9 @@ public class UserController {
 
     @Autowired
     private KafkaProducer producer;
+
+    @Autowired
+    private IDeptService deptService;
 
     @ApiOperationSupport(order = 1)
     @ApiOperation("获取用户详情")
@@ -112,9 +120,21 @@ public class UserController {
     @ApiOperationSupport(order = 7)
     @GetMapping("/sendMsg")
     public R<String> sendMsg(@RequestParam("id") Integer id) {
-
+        List<Dept> deptList = Lists.newArrayList();
         User user = this.userService.getById(id);
-        producer.sendMessage(KafkaConstant.USER_TOPIC, JsonUtil.toJson(user));
+        Dept dept = this.deptService.getById(id);
+        deptList.add(dept);
+        for (int i = 0; i < 5; i++) {
+            user.setSex(i);
+            producer.sendMessage(KafkaConstant.USER_TOPIC, JsonUtil.toJson(user));
+        }
+
+        for (int i = 6; i < 10; i++) {
+            user.setSex(i);
+            producer.sendMessage(KafkaConstant.USER_TOPIC, JsonUtil.toJson(user));
+        }
+
+        producer.sendMessage(KafkaConstant.DEPT_TOPIC, JsonUtil.toJson(deptList));
         return R.data("成功啦");
     }
 }

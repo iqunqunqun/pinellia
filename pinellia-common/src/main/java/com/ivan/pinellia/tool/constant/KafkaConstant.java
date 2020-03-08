@@ -13,9 +13,20 @@ public interface KafkaConstant {
      */
     String USER_TOPIC = "userTopic";
 
+    /**
+     * dept topic
+     */
+    String DEPT_TOPIC = "deptTopic";
+
 
     /**
      * group_id
      */
     String USER_GROUP = "userGroup";
+
+
+    /**
+     * dept group
+     */
+    String DEPT_GROUP = "deptGroup";
 }

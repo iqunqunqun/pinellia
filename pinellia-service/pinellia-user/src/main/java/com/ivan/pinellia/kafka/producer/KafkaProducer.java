@@ -26,9 +26,9 @@ public class KafkaProducer {
     private final Logger log = LoggerFactory.getLogger(KafkaProducer.class);
 
     @Autowired
-    private KafkaTemplate kafkaTemplate;
+    private KafkaTemplate<String, String> kafkaTemplate;
 
-    @SuppressWarnings("unchecked")
+
     public void sendMessage(String topic, String data) {
         log.info("kafka sendMessage start");
         ListenableFuture<SendResult<String, String>> future = kafkaTemplate.send(topic, data);

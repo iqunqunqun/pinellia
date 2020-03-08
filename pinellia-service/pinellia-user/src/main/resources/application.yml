@@ -47,7 +47,7 @@ spring:
         session.timeout.ms: 15000
     listener:
       missing-topics-fatal: false
-
+      concurrency: 10
 
 # flowable配置
 flowable:
