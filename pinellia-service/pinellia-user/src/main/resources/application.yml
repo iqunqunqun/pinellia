@@ -36,7 +36,6 @@ spring:
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
       properties:
         linger.ms: 1
-
     consumer:
       enable-auto-commit: false
       auto-commit-interval: 100ms
@@ -47,7 +46,6 @@ spring:
         session.timeout.ms: 15000
     listener:
       missing-topics-fatal: false
-      concurrency: 10
 
 # flowable配置
 flowable:
@@ -141,7 +139,6 @@ flowable:
   task:
     app:
       kafka-enabled: true
-
 
 # mybatis-plus的配置
 mybatis-plus:

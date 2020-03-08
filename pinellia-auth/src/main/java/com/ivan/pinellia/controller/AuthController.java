@@ -1,12 +1,16 @@
 package com.ivan.pinellia.controller;
 
 
+import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.ivan.pinellia.dto.LoginDTO;
+import com.ivan.pinellia.feign.IUserClient;
 import com.ivan.pinellia.secure.config.WebSecurityConfig;
 import com.ivan.pinellia.secure.provider.CustomUserDetailsServiceImpl;
 import com.ivan.pinellia.secure.utils.JwtTokenUtils;
 import com.ivan.pinellia.tool.api.R;
 import com.ivan.pinellia.tool.api.ResultCode;
+import com.ivan.pinellia.vo.UserVO;
+import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,7 +40,12 @@ public class AuthController {
     @Autowired
     private CustomUserDetailsServiceImpl userDetailsService;
 
+    @Autowired
+    private IUserClient userClient;
 
+
+    @ApiOperation("登录接口")
+    @ApiOperationSupport(order = 1)
     @PostMapping("/login")
     public R login(@Valid @RequestBody LoginDTO loginDTO, HttpServletResponse response) {
         // 通过用户名和密码创建一个 Authentication 认证对象，实现类为 UsernamePasswordAuthenticationToken
@@ -58,8 +67,9 @@ public class AuthController {
     }
 
     @GetMapping("/info")
-    public R<String> getInfo() {
-        return R.data("OK");
+    public R getInfo() {
+        R<UserVO> admin = userClient.detailByAccount("admin");
+        return R.data(admin);
     }
 
 }

@@ -70,7 +70,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                  "/**/*.js",
                  "/h2-console/**",
                  "/auth/login",
-                 "/v2/api-docs"
+                 "/v2/api-docs",
+                 "/actuator/**"
          );
    }
 
