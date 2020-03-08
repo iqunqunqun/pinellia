@@ -66,6 +66,12 @@
             <artifactId>knife4j-micro-spring-boot-starter</artifactId>
         </dependency>
 
+        <!--feign-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-openfeign</artifactId>
+        </dependency>
+
         <!--pinellia-common-->
         <dependency>
             <groupId>com.ivan</groupId>
