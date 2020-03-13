@@ -1,5 +1,6 @@
 package com.ivan.pinellia.tool.utils;
 
+import cn.hutool.poi.excel.ExcelFileUtil;
 import com.alibaba.excel.EasyExcel;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.alibaba.excel.metadata.property.ExcelHeadProperty;
@@ -52,6 +53,11 @@ public class ExcelUtil<T> {
         this.clazz = clazz;
     }
 
+    /**
+     * 写Excel文件
+     * @param response
+     * @param excelUtil
+     */
     @SneakyThrows
     public void write(HttpServletResponse response, ExcelUtil<?> excelUtil) {
         try {
@@ -72,6 +78,13 @@ public class ExcelUtil<T> {
 
     }
 
+    /**
+     * 读取Excel文件
+     * @param file
+     * @param excelUtil
+     * @param listener
+     * @return
+     */
     @SneakyThrows
     public List<T> read(MultipartFile file, ExcelUtil<T> excelUtil, ExcelDataListener<T> listener) {
         InputStream inputStream = file.getInputStream();
@@ -79,6 +92,18 @@ public class ExcelUtil<T> {
         List<T> dataList = listener.getDataList();
         System.out.println("dataList = " + dataList);
         return dataList;
+    }
+
+
+    /**
+     * 验证是否是Excel文件
+     * @param file
+     * @return
+     */
+    @SneakyThrows
+    public boolean isExcel(MultipartFile file) {
+        InputStream inputStream = file.getInputStream();
+        return ExcelFileUtil.isXlsx(inputStream);
     }
 
 

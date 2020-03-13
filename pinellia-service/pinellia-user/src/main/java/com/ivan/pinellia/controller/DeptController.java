@@ -136,8 +136,9 @@ public class DeptController {
     @ApiOperation("导入Excel")
     @ApiOperationSupport(order = 8)
     @PostMapping("/importExcel")
-    public void importExcel(@RequestPart MultipartFile file) {
-        this.deptService.importExcel(file);
+    public R importExcel(@RequestPart MultipartFile file) {
+        boolean b = this.deptService.importExcel(file);
+        return R.data(b);
     }
 }
 

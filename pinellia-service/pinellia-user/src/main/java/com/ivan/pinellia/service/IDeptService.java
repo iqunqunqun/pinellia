@@ -58,9 +58,9 @@ public interface IDeptService extends BaseService<Dept> {
      *
      * 导入Excel
      * @date 2020/2/22 5:32 下午
-     * @param file:
+     * @param file :
      * @return void
      * @author chenyifan
      */
-    void importExcel(MultipartFile file);
+    boolean importExcel(MultipartFile file);
 }

@@ -25,20 +25,20 @@ public class DeptExcel {
     /**
      * 部门名
      */
-    @ExcelProperty("部门名")
+    @ExcelProperty({"一记头","部门名"})
     private String deptName;
 
     /**
      * 部门全称
      */
-    @ExcelProperty("部门全称")
+    @ExcelProperty({"一记头", "部门全称"})
     private String fullName;
 
 
     /**
      * 备注
      */
-    @ExcelProperty("备注")
+    @ExcelProperty({"备注", "一记头"})
     private String remark;
 
 }

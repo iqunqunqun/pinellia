@@ -6,7 +6,6 @@ import com.google.common.collect.Lists;
 import com.ivan.pinellia.entity.Dept;
 import com.ivan.pinellia.entity.User;
 import com.ivan.pinellia.excel.DeptExcel;
-import com.ivan.pinellia.listener.DeptExcelListener;
 import com.ivan.pinellia.mapper.DeptMapper;
 import com.ivan.pinellia.service.IDeptService;
 import com.ivan.pinellia.mybatis.base.BaseServiceImpl;
@@ -16,15 +15,11 @@ import com.ivan.pinellia.tool.node.ForestNodeMerger;
 import com.ivan.pinellia.tool.utils.BeanUtil;
 import com.ivan.pinellia.tool.utils.ExcelUtil;
 import com.ivan.pinellia.vo.DeptVO;
-import com.ivan.pinellia.vo.UserVO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
-import java.sql.Wrapper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -104,9 +99,13 @@ public class DeptServiceImpl extends BaseServiceImpl<DeptMapper, Dept> implement
     }
 
     @Override
-    public void importExcel(MultipartFile file) {
+    public boolean importExcel(MultipartFile file) {
         // 这里 需要指定读用哪个class去读，然后读取第一个sheet 文件流会自动关闭
         ExcelUtil<DeptExcel> excelUtil = new ExcelUtil<DeptExcel>(DeptExcel.class);
+        boolean b = excelUtil.isExcel(file);
+        if (!b) {
+            return false;
+        }
         List<DeptExcel> excelList = excelUtil.read(file, excelUtil, new ExcelDataListener<>());
         ArrayList<Dept> deptList = Lists.newArrayList();
         excelList.forEach(deptExcel -> {
@@ -114,6 +113,7 @@ public class DeptServiceImpl extends BaseServiceImpl<DeptMapper, Dept> implement
             deptList.add(dept);
         });
         this.saveBatch(deptList);
+        return true;
     }
 
 

@@ -4,6 +4,7 @@ package com.ivan.pinellia.controller;
 import com.github.xiaoymin.knife4j.annotations.ApiOperationSupport;
 import com.ivan.pinellia.dto.LoginDTO;
 import com.ivan.pinellia.feign.IUserClient;
+import com.ivan.pinellia.query.UserQuery;
 import com.ivan.pinellia.secure.config.WebSecurityConfig;
 import com.ivan.pinellia.secure.provider.CustomUserDetailsServiceImpl;
 import com.ivan.pinellia.secure.utils.JwtTokenUtils;
@@ -67,7 +68,7 @@ public class AuthController {
     }
 
     @GetMapping("/info")
-    public R getInfo() {
+    public R getInfo(UserQuery query) {
         R<UserVO> admin = userClient.detailByAccount("admin");
         return R.data(admin);
     }

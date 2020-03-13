@@ -124,16 +124,7 @@ public class UserController {
         User user = this.userService.getById(id);
         Dept dept = this.deptService.getById(id);
         deptList.add(dept);
-        for (int i = 0; i < 5; i++) {
-            user.setSex(i);
-            producer.sendMessage(KafkaConstant.USER_TOPIC, JsonUtil.toJson(user));
-        }
-
-        for (int i = 6; i < 10; i++) {
-            user.setSex(i);
-            producer.sendMessage(KafkaConstant.USER_TOPIC, JsonUtil.toJson(user));
-        }
-
+        producer.sendMessage(KafkaConstant.USER_TOPIC, JsonUtil.toJson(user));
         producer.sendMessage(KafkaConstant.DEPT_TOPIC, JsonUtil.toJson(deptList));
         return R.data("成功啦");
     }

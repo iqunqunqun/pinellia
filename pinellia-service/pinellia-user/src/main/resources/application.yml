@@ -16,7 +16,7 @@ spring:
   # 数据库
   datasource:
     driver-class-name: com.p6spy.engine.spy.P6SpyDriver
-    url: jdbc:p6spy:mysql://47.100.93.25:13306/pinellia?useUnicode=true&useSSL=false&characterEncoding=utf8
+    url: jdbc:p6spy:mysql://47.100.93.25:13306/pinellia?useUnicode=true&useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true
     username: root
     password: aini1314liliqun
 
