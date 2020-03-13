@@ -13,7 +13,7 @@ import com.ivan.pinellia.service.IUserService;
 import com.ivan.pinellia.tool.excel.ExcelDataListener;
 import com.ivan.pinellia.tool.node.ForestNodeMerger;
 import com.ivan.pinellia.tool.utils.BeanUtil;
-import com.ivan.pinellia.tool.utils.ExcelUtil;
+import com.ivan.pinellia.tool.excel.ExcelUtil;
 import com.ivan.pinellia.vo.DeptVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
