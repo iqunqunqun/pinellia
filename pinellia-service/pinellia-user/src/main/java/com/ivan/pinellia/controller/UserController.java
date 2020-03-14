@@ -119,13 +119,23 @@ public class UserController {
     @ApiOperation("发送kafka消息")
     @ApiOperationSupport(order = 7)
     @GetMapping("/sendMsg")
-    public R<String> sendMsg(@RequestParam("id") Integer id) {
+    public R<String> sendMsg(@RequestParam("id") Integer id,
+                             @RequestParam("value") Integer value) {
         List<Dept> deptList = Lists.newArrayList();
         User user = this.userService.getById(id);
         Dept dept = this.deptService.getById(id);
         deptList.add(dept);
-        producer.sendMessage(KafkaConstant.USER_TOPIC, JsonUtil.toJson(user));
-        producer.sendMessage(KafkaConstant.DEPT_TOPIC, JsonUtil.toJson(deptList));
+
+        for (int i = 0; i < 100; i++) {
+            user.setSex(i);
+            producer.sendMessage(KafkaConstant.USER_TOPIC, JsonUtil.toJson(user), value);
+        }
+
+        for (int i = 0; i < 100; i++) {
+            user.setSex(i);
+            producer.sendMessage(KafkaConstant.DEPT_TOPIC, JsonUtil.toJson(user), value);
+        }
+        producer.sendMessage(KafkaConstant.DEPT_TOPIC, JsonUtil.toJson(deptList), value);
         return R.data("成功啦");
     }
 }
