@@ -10,8 +10,7 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.ivan.pinellia.mybatis.base.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 /**
@@ -26,6 +25,9 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
 @TableName("pinellia_user")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;

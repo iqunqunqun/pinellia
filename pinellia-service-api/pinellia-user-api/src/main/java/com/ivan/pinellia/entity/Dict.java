@@ -3,8 +3,7 @@ package com.ivan.pinellia.entity;
 import com.baomidou.mybatisplus.annotation.*;
 import com.ivan.pinellia.mybatis.base.BaseEntity;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import lombok.experimental.Accessors;
 
 /**
@@ -19,6 +18,9 @@ import lombok.experimental.Accessors;
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
 @TableName("pinellia_dict")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 public class Dict extends BaseEntity {
 
     private static final long serialVersionUID = 1L;
