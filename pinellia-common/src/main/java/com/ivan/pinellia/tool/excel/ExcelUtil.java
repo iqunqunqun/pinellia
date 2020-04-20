@@ -52,17 +52,17 @@ public class ExcelUtil<T> {
     /**
      * 写Excel文件
      * @param response
-     * @param excelUtil
+     * @param excelParam
      */
     @SneakyThrows
-    public void write(HttpServletResponse response, ExcelUtil<?> excelUtil) {
+    public static void write(HttpServletResponse response, ExcelParam excelParam) {
         try {
             response.setContentType(PinelliaConstant.EXCEL_TYPE);
             response.setCharacterEncoding(StringPool.UTF_8);
             // 这里URLEncoder.encode可以防止中文乱码 当然和easyexcel没有关系
-            String fileName = URLEncoder.encode(excelUtil.getFileName(), StringPool.UTF_8);
+            String fileName = URLEncoder.encode(excelParam.getFileName(), StringPool.UTF_8);
             response.setHeader(CONTENT_DISPOSITION_HEADER, FILE_NAME_HEADER + fileName + StringPool.XLSX);
-            EasyExcel.write(response.getOutputStream(), excelUtil.getClazz()).autoCloseStream(Boolean.FALSE).sheet(SHEET_ONE).doWrite(excelUtil.getData());
+            EasyExcel.write(response.getOutputStream(), excelParam.getClazz()).autoCloseStream(Boolean.FALSE).sheet(SHEET_ONE).doWrite(excelParam.getDataList());
         } catch (Exception e) {
             LOGGER.error("错误--{}", e.getMessage());
             // 重置response
@@ -75,19 +75,46 @@ public class ExcelUtil<T> {
     }
 
     /**
+     * 读取Excel文件内容
+     * @param file Excel文件
+     * @param clazz 读取Excel必要的参数
+     * @return
+     */
+    public static <T> List<T> read(MultipartFile file, Class<?> clazz) {
+        ExcelDataListener<T> listener = new ExcelDataListener<>();
+        ExcelParam param = ExcelParam.builder().clazz(clazz).build();
+        return ExcelUtil.read(file, param, listener);
+    }
+
+    /**
+     * 读取Excel文件内容
+     * @param file Excel文件
+     * @param param 读取Excel必要的参数
+     * @return
+     */
+    public static <T> List<T> read(MultipartFile file, ExcelParam param) {
+        ExcelDataListener<T> listener = new ExcelDataListener<>();
+        return ExcelUtil.read(file, param, listener);
+    }
+
+
+
+    /**
      * 读取Excel文件
      * @param file
-     * @param excelUtil
+     * @param param
      * @param listener
      * @return
      */
     @SneakyThrows
-    public List<T> read(MultipartFile file, ExcelUtil<T> excelUtil, ExcelDataListener<T> listener) {
+    public static <T> List<T> read(MultipartFile file, ExcelParam param, ExcelDataListener<T> listener) {
         InputStream inputStream = file.getInputStream();
-        EasyExcel.read(inputStream, excelUtil.getClazz(), listener).sheet().doRead();
-        List<T> dataList = listener.getDataList();
-        System.out.println("dataList = " + dataList);
-        return dataList;
+        EasyExcel.read(inputStream, param.getClazz(), listener)
+                .sheet()
+                .autoTrim(true)
+                .headRowNumber(param.getHeadRowNumber() == null? 1: param.getHeadRowNumber())
+                .doRead();
+        return listener.getDataList();
     }
 
 

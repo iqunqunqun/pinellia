@@ -14,8 +14,8 @@ spring:
   # 数据库
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://47.100.93.25:13306/pinellia?useUnicode=true&useSSL=false&characterEncoding=utf8
-    username: root
+    url: jdbc:mysql://rm-8vbkeos92871524q0mo.mysql.zhangbei.rds.aliyuncs.com:3306/pinellia?useUnicode=true&useSSL=false&characterEncoding=utf8
+    username: chenyifan
     password: aini1314liliqun
 
 # 端点配置

@@ -10,11 +10,16 @@ import com.ivan.pinellia.mapper.DeptMapper;
 import com.ivan.pinellia.service.IDeptService;
 import com.ivan.pinellia.mybatis.base.BaseServiceImpl;
 import com.ivan.pinellia.service.IUserService;
+import com.ivan.pinellia.tool.constant.CommonConstant;
 import com.ivan.pinellia.tool.excel.ExcelDataListener;
+import com.ivan.pinellia.tool.excel.ExcelParam;
 import com.ivan.pinellia.tool.node.ForestNodeMerger;
 import com.ivan.pinellia.tool.utils.BeanUtil;
 import com.ivan.pinellia.tool.excel.ExcelUtil;
 import com.ivan.pinellia.vo.DeptVO;
+import groovy.util.logging.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -34,8 +39,10 @@ import java.util.stream.Collectors;
  * @since 2020-01-12
  */
 @Service
+
 public class DeptServiceImpl extends BaseServiceImpl<DeptMapper, Dept> implements IDeptService {
 
+    private static Logger logger = LoggerFactory.getLogger(DeptServiceImpl.class);
 
     @Autowired
     private IUserService userService;
@@ -94,8 +101,8 @@ public class DeptServiceImpl extends BaseServiceImpl<DeptMapper, Dept> implement
             DeptExcel excel = BeanUtil.copy(dept, DeptExcel.class);
             list.add(excel);
         });
-        ExcelUtil<DeptExcel> excel = new ExcelUtil<>("excel", DeptExcel.class, list);
-        excel.write(response, excel);
+
+        ExcelUtil.write(response, ExcelParam.builder().fileName(CommonConstant.FILE_NAME).clazz(DeptExcel.class).dataList(list).build());
     }
 
     @Override
@@ -106,13 +113,15 @@ public class DeptServiceImpl extends BaseServiceImpl<DeptMapper, Dept> implement
         if (!b) {
             return false;
         }
-        List<DeptExcel> excelList = excelUtil.read(file, excelUtil, new ExcelDataListener<>());
+
+        List<DeptExcel> deptExcelList = ExcelUtil.read(file, DeptExcel.class);
         ArrayList<Dept> deptList = Lists.newArrayList();
-        excelList.forEach(deptExcel -> {
+        deptExcelList.forEach(deptExcel -> {
             Dept dept = BeanUtil.copy(deptExcel, Dept.class);
             deptList.add(dept);
+            logger.info("deptExcel->{}", deptExcel);
         });
-        this.saveBatch(deptList);
+//        this.saveBatch(deptList);
         return true;
     }
 

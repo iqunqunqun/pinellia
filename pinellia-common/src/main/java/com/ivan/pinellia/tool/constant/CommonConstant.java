@@ -33,4 +33,9 @@ public interface CommonConstant {
      */
     String DEFAULT_PASSWORD = "123456";
 
+    /**
+     * excel文件名
+     */
+    String FILE_NAME = "excelName";
+
 }
