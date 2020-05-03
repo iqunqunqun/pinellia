@@ -4,11 +4,14 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.google.common.collect.Lists;
 import com.ivan.pinellia.entity.Dept;
+import com.ivan.pinellia.entity.Menu;
 import com.ivan.pinellia.entity.User;
 import com.ivan.pinellia.excel.DeptExcel;
+import com.ivan.pinellia.feign.IUserClient;
 import com.ivan.pinellia.mapper.DeptMapper;
 import com.ivan.pinellia.service.IDeptService;
 import com.ivan.pinellia.mybatis.base.BaseServiceImpl;
+import com.ivan.pinellia.service.IMenuService;
 import com.ivan.pinellia.service.IUserService;
 import com.ivan.pinellia.tool.constant.CommonConstant;
 import com.ivan.pinellia.tool.excel.ExcelDataListener;
@@ -21,7 +24,9 @@ import groovy.util.logging.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
@@ -46,6 +51,12 @@ public class DeptServiceImpl extends BaseServiceImpl<DeptMapper, Dept> implement
 
     @Autowired
     private IUserService userService;
+
+    @Autowired
+    private IMenuService menuService;
+
+    @Autowired
+    private IUserClient userClient;
 
 
     @Override
@@ -123,6 +134,33 @@ public class DeptServiceImpl extends BaseServiceImpl<DeptMapper, Dept> implement
         });
 //        this.saveBatch(deptList);
         return true;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public boolean testTran() {
+        this.sync();
+        boolean b = this.saveDept();
+        boolean menuFlag = this.saveMenu();
+        return b && menuFlag;
+    }
+
+    private void sync() {
+        User user = new User();
+        user.setAccount("chenyifan");
+        userClient.submit(user);
+    }
+
+    boolean saveMenu() {
+        Menu menu = new Menu();
+        menu.setParentId(12);
+        return this.menuService.save(menu);
+    }
+
+    boolean saveDept() {
+        Dept dept = new Dept();
+        dept.setDeptName("测试");
+        return this.save(dept);
     }
 
 

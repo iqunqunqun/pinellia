@@ -63,4 +63,10 @@ public interface IDeptService extends BaseService<Dept> {
      * @author chenyifan
      */
     boolean importExcel(MultipartFile file);
+
+    /**
+     * 测试事务
+     * @return
+     */
+    boolean testTran();
 }

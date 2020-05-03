@@ -72,5 +72,4 @@ public class AuthController {
         R<UserVO> admin = userClient.detailByAccount("admin");
         return R.data(admin);
     }
-
 }

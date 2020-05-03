@@ -6,11 +6,12 @@ import com.ivan.pinellia.entity.User;
 import com.ivan.pinellia.tool.api.R;
 import com.ivan.pinellia.tool.constant.AppConstant;
 import com.ivan.pinellia.vo.UserVO;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -68,4 +69,13 @@ public interface IUserClient {
 	 */
 	@GetMapping(USER_API_PREFIX + "/detailByAccount")
 	R<UserVO> detailByAccount(@RequestParam String account);
+
+	/**
+	 * 新增或修改
+	 * @param user
+	 * @return
+	 */
+	@PostMapping(USER_API_PREFIX + "/submit")
+	@ApiOperation(value = "新增或修改", notes = "传入User")
+	R<Boolean> submit(@Valid @RequestBody User user);
 }

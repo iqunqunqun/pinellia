@@ -140,5 +140,13 @@ public class DeptController {
         boolean b = this.deptService.importExcel(file);
         return R.data(b);
     }
+
+    @ApiOperation("测试事务控制")
+    @ApiOperationSupport(order = 9)
+    @PostMapping("/testTran")
+    public R testTran() {
+        boolean b = this.deptService.testTran();
+        return R.data(b);
+    }
 }
 
