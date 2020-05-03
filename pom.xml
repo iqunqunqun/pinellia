@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.ivan</groupId>
+    <artifactId>pinellia</artifactId>
+    <packaging>pom</packaging>
+    <version>2.0.0-SNAPSHOT</version>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.2.2.RELEASE</version>
+    </parent>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>1.8</java.version>
+        <spring.cloud.version>Hoxton.SR1</spring.cloud.version>
+        <spring.alibaba.cloud.version>2.1.1.RELEASE</spring.alibaba.cloud.version>
+        <mysql.version>8.0.18</mysql.version>
+        <mybatis.plus.version>3.3.0</mybatis.plus.version>
+        <velocity.version>2.1</velocity.version>
+        <flowable.version>6.5.0</flowable.version>
+        <hutool.version>5.1.0</hutool.version>
+        <p6spy.version>3.8.7</p6spy.version>
+        <swagger.version>2.9.2</swagger.version>
+        <swagger.models.version>1.5.21</swagger.models.version>
+        <knife4j.version>2.0.1</knife4j.version>
+        <spring.boot.admin.version>2.2.0</spring.boot.admin.version>
+        <jwt.version>0.9.1</jwt.version>
+        <easy.excel.version>2.1.6</easy.excel.version>
+    </properties>
+</project>
