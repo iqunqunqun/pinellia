@@ -1,0 +1,20 @@
+# spring 配置
+spring:
+  application:
+    name: user-service
+
+  cloud:
+    nacos:
+      # 服务配置
+      config:
+        server-addr: 39.101.193.232:8848
+        file-extension: YAML
+        group: DEV_GROUP
+        namespace: e39d403d-1700-4c07-a9bf-02d9b72fb813
+
+      # 服务发现
+      discovery:
+        server-addr: 39.101.193.232:8848
+        namespace: e39d403d-1700-4c07-a9bf-02d9b72fb813
+        group: DEV_GROUP
+
