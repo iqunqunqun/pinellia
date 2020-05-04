@@ -7,7 +7,14 @@
     <groupId>com.ivan</groupId>
     <artifactId>pinellia</artifactId>
     <packaging>pom</packaging>
-    <version>2.0.0-SNAPSHOT</version>
+    <version>1.0.0-SNAPSHOT</version>
+    <modules>
+        <module>pinellia-common</module>
+        <module>pinellia-service</module>
+        <module>pinellia-service-api</module>
+        <module>pinellia-auth</module>
+        <module>pinellia-gateway</module>
+    </modules>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -18,7 +25,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <java.version>1.8</java.version>
-        <spring.cloud.version>Hoxton.SR1</spring.cloud.version>
+        <spring.cloud.version>Hoxton.SR4</spring.cloud.version>
         <spring.alibaba.cloud.version>2.1.1.RELEASE</spring.alibaba.cloud.version>
         <mysql.version>8.0.18</mysql.version>
         <mybatis.plus.version>3.3.0</mybatis.plus.version>
