@@ -14,70 +14,63 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * 用户表
  * </p>
  *
  * @author ivan
- * @since 2020-05-04
+ * @since 2020-07-20
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Accessors(chain = true)
-@TableName("pinellia_user")
-@ApiModel(value="User对象", description="")
+@TableName("sys_user")
+@ApiModel(value="User对象", description="用户表")
 public class User extends BaseEntity {
 
     private static final long serialVersionUID=1L;
 
-    @ApiModelProperty(value = "用户ID")
+    @ApiModelProperty(value = "主键ID")
     @TableId(value = "user_id", type = IdType.AUTO)
     private Integer userId;
 
-    @ApiModelProperty(value = "账号")
-    @TableField("account")
-    private String account;
+    @ApiModelProperty(value = "用户名")
+    @TableField("username")
+    private String username;
 
-    @ApiModelProperty(value = "密码")
     @TableField("password")
     private String password;
 
-    @ApiModelProperty(value = "昵称")
-    @TableField("name")
-    private String name;
+    @ApiModelProperty(value = "随机盐")
+    @TableField("salt")
+    private String salt;
 
-    @ApiModelProperty(value = "真名")
-    @TableField("real_name")
-    private String realName;
+    @ApiModelProperty(value = "简介")
+    @TableField("phone")
+    private String phone;
 
     @ApiModelProperty(value = "头像")
     @TableField("avatar")
     private String avatar;
 
-    @ApiModelProperty(value = "手机")
-    @TableField("phone")
-    private String phone;
-
-    @ApiModelProperty(value = "生日")
-    @TableField("birthday")
-    private LocalDateTime birthday;
-
-    @ApiModelProperty(value = "性别")
-    @TableField("sex")
-    private Integer sex;
-
-    @ApiModelProperty(value = "角色id")
-    @TableField("role_id")
-    private Integer roleId;
-
-    @ApiModelProperty(value = "部门id")
+    @ApiModelProperty(value = "部门ID")
     @TableField("dept_id")
     private Integer deptId;
 
-    @ApiModelProperty(value = "状态(0-在线，1-不在线)")
-    @TableField("status")
-    private Integer status;
+    @ApiModelProperty(value = "创建时间")
+    @TableField("create_time")
+    private LocalDateTime createTime;
 
-    @ApiModelProperty(value = "是否删除")
-    @TableField("is_deleted")
-    private Integer isDeleted;
+    @ApiModelProperty(value = "修改时间")
+    @TableField("update_time")
+    private LocalDateTime updateTime;
+
+    @ApiModelProperty(value = "0-正常，9-锁定")
+    @TableField("lock_flag")
+    private String lockFlag;
+
+    @ApiModelProperty(value = "0-正常，1-删除")
+    @TableField("del_flag")
+    private String delFlag;
+
+
 }

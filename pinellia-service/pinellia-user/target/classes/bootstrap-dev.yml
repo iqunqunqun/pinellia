@@ -1,0 +1,15 @@
+spring:
+  cloud:
+    nacos:
+      # 服务配置
+      config:
+        server-addr: 39.101.193.232:8848
+        file-extension: yaml
+        group: PINELLIA_GROUP
+        namespace: 147eab88-b998-445c-9219-d7f0dd4fe967
+
+
+      # 服务发现
+      discovery:
+        server-addr: 39.101.193.232:8848
+        namespace: 147eab88-b998-445c-9219-d7f0dd4fe967

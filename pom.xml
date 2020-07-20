@@ -39,6 +39,9 @@
         <jwt.version>0.9.1</jwt.version>
         <easy.excel.version>2.1.6</easy.excel.version>
         <common.version>1.0.0-SNAPSHOT</common.version>
+        <seata.version>1.2.0</seata.version>
+        <elasticjob.version>2.1.5</elasticjob.version>
+        <curator-framework.version>2.11.0</curator-framework.version>
     </properties>
 
     <dependencyManagement>
@@ -60,6 +63,45 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+
+            <!--seata-->
+            <dependency>
+                <groupId>io.seata</groupId>
+                <artifactId>seata-all</artifactId>
+                <version>${seata.version}</version>
+            </dependency>
+
+            <!--定时任务框架依赖-->
+            <dependency>
+                <artifactId>elastic-job-lite-spring</artifactId>
+                <groupId>com.dangdang</groupId>
+                <version>${elasticjob.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.dangdang</groupId>
+                <artifactId>elastic-job-lite-core</artifactId>
+                <version>${elasticjob.version}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>curator-framework</artifactId>
+                <groupId>org.apache.curator</groupId>
+                <version>${curator-framework.version}</version>
+            </dependency>
+
+            <dependency>
+                <artifactId>curator-recipes</artifactId>
+                <groupId>org.apache.curator</groupId>
+                <version>${curator-framework.version}</version>
+                <exclusions>
+                    <exclusion>
+                        <artifactId>curator-framework</artifactId>
+                        <groupId>org.apache.curator</groupId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!--定时任务框架依赖结束-->
 
             <!--easy excel-->
             <dependency>

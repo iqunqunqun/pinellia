@@ -22,7 +22,7 @@ public class MybatisPlusGenerator {
 
         // 全局配置
         GlobalConfig gc = new GlobalConfig();
-        gc.setOutputDir("E:\\develop\\workspace\\pinellia-release-mybatis-plus");
+        gc.setOutputDir("E:\\project\\generator\\pinellia");
         gc.setAuthor("ivan");
         gc.setOpen(false);
         gc.setFileOverride(true);
@@ -32,7 +32,7 @@ public class MybatisPlusGenerator {
 
         // 数据源配置
         DataSourceConfig dsc = new DataSourceConfig();
-        dsc.setUrl("jdbc:mysql://rm-8vbkeos92871524q0mo.mysql.zhangbei.rds.aliyuncs.com:3306/pinellia-release?useUnicode=true&useSSL=false&characterEncoding=utf8");
+        dsc.setUrl("jdbc:mysql://rm-8vbkeos92871524q0mo.mysql.zhangbei.rds.aliyuncs.com:3306/pinellia_mall_admin?useUnicode=true&useSSL=false&characterEncoding=utf8");
         // dsc.setSchemaName("public");
         dsc.setDriverName("com.mysql.jdbc.Driver");
         dsc.setUsername("chenyifan");
@@ -71,9 +71,9 @@ public class MybatisPlusGenerator {
         strategy.setSuperEntityClass("com.ivan.pinellia.mybatis.base.BaseEntity");
         strategy.setSuperServiceClass("com.ivan.pinellia.mybatis.base.BaseService");
         strategy.setSuperServiceImplClass("com.ivan.pinellia.mybatis.base.BaseServiceImpl");
-        strategy.setInclude(new String[]{"pinellia_user"});
+        strategy.setInclude(new String[]{"sys_user"});
 //        strategy.setControllerMappingHyphenStyle(true);
-        strategy.setTablePrefix("pinellia_");
+        strategy.setTablePrefix("sys_");
         mpg.setStrategy(strategy);
         mpg.execute();
     }

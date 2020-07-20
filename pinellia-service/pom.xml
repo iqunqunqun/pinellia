@@ -42,6 +42,13 @@
             <artifactId>mysql-connector-java</artifactId>
         </dependency>
 
+        <!--seata-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-seata</artifactId>
+        </dependency>
+
+
         <!--mybatis plus-->
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -53,6 +60,56 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
+
+        <!-- Redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+            <exclusions>
+                <!-- 排除lettuce包 -->
+                <exclusion>
+                    <groupId>io.lettuce</groupId>
+                    <artifactId>lettuce-core</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Jedis -->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
+
+        <!--定时任务框架依赖-->
+        <dependency>
+            <artifactId>elastic-job-lite-spring</artifactId>
+            <groupId>com.dangdang</groupId>
+            <version>${elasticjob.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.dangdang</groupId>
+            <artifactId>elastic-job-lite-core</artifactId>
+        </dependency>
+
+        <dependency>
+            <artifactId>curator-framework</artifactId>
+            <groupId>org.apache.curator</groupId>
+            <version>${curator-framework.version}</version>
+        </dependency>
+
+        <dependency>
+            <artifactId>curator-recipes</artifactId>
+            <groupId>org.apache.curator</groupId>
+            <version>${curator-framework.version}</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>curator-framework</artifactId>
+                    <groupId>org.apache.curator</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <!--定时任务框架依赖结束-->
 
         <!--feign-->
         <dependency>
