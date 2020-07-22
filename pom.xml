@@ -42,6 +42,7 @@
         <seata.version>1.2.0</seata.version>
         <elasticjob.version>2.1.5</elasticjob.version>
         <curator-framework.version>2.11.0</curator-framework.version>
+        <redission.version>3.13.2</redission.version>
     </properties>
 
     <dependencyManagement>
@@ -136,6 +137,13 @@
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity-engine-core</artifactId>
                 <version>${velocity.version}</version>
+            </dependency>
+
+            <!-- redission -->
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-boot-starter</artifactId>
+                <version>${redission.version}</version>
             </dependency>
 
             <!--swagger-->
