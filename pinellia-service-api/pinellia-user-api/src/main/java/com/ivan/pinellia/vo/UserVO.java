@@ -1,10 +1,9 @@
-package com.ivan.pinellia.entity;
+package com.ivan.pinellia.vo;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.ivan.pinellia.mybatis.base.BaseEntity;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -22,10 +21,9 @@ import lombok.experimental.Accessors;
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
 @TableName("sys_user")
 @ApiModel(value="User对象", description="用户表")
-public class User extends BaseEntity {
+public class UserVO extends BaseEntity {
 
     private static final long serialVersionUID=1L;
 
@@ -36,13 +34,6 @@ public class User extends BaseEntity {
     @ApiModelProperty(value = "用户名")
     @TableField("username")
     private String username;
-
-    @TableField("password")
-    private String password;
-
-    @ApiModelProperty(value = "随机盐")
-    @TableField("salt")
-    private String salt;
 
     @ApiModelProperty(value = "简介")
     @TableField("phone")

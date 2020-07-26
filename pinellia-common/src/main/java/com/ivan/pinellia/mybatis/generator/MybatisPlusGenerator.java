@@ -71,7 +71,7 @@ public class MybatisPlusGenerator {
         strategy.setSuperEntityClass("com.ivan.pinellia.mybatis.base.BaseEntity");
         strategy.setSuperServiceClass("com.ivan.pinellia.mybatis.base.BaseService");
         strategy.setSuperServiceImplClass("com.ivan.pinellia.mybatis.base.BaseServiceImpl");
-        strategy.setInclude(new String[]{"sys_user"});
+        strategy.setInclude(new String[]{"sys_role"});
 //        strategy.setControllerMappingHyphenStyle(true);
         strategy.setTablePrefix("sys_");
         mpg.setStrategy(strategy);

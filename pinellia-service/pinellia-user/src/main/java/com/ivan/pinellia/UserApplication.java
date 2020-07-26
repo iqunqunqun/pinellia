@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.GetMapping;
  * @className UserApplication
  * @since 2020/5/4 18:32
  */
-@EnableTransactionManagement
+
 @SpringBootApplication
 @EnableDiscoveryClient
 @MapperScan("com.ivan.pinellia.mapper")

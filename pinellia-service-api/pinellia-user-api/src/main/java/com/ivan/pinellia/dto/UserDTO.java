@@ -1,33 +1,23 @@
-package com.ivan.pinellia.entity;
+package com.ivan.pinellia.dto;
 
-import com.baomidou.mybatisplus.annotation.TableName;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
-import java.time.LocalDateTime;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.ivan.pinellia.mybatis.base.BaseEntity;
-import io.swagger.annotations.ApiModel;
+import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import lombok.experimental.Accessors;
 
 /**
- * <p>
- * 用户表
- * </p>
+ * <p></p>
  *
  * @author ivan
- * @since 2020-07-20
+ * @className UserDTO
+ * @since 2020/7/23 22:33
  */
-@Data
-@EqualsAndHashCode(callSuper = true)
-@Accessors(chain = true)
-@TableName("sys_user")
-@ApiModel(value="User对象", description="用户表")
-public class User extends BaseEntity {
 
-    private static final long serialVersionUID=1L;
+@Data
+@EqualsAndHashCode(callSuper = false)
+public class UserDTO {
 
     @ApiModelProperty(value = "主键ID")
     @TableId(value = "user_id", type = IdType.AUTO)
@@ -63,6 +53,5 @@ public class User extends BaseEntity {
     @ApiModelProperty(value = "0-正常，1-删除")
     @TableField("del_flag")
     private String delFlag;
-
 
 }

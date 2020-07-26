@@ -29,6 +29,7 @@
         <spring.cloud.alibaba.version>2.1.1.RELEASE</spring.cloud.alibaba.version>
         <mysql.version>8.0.19</mysql.version>
         <mybatis.plus.version>3.3.0</mybatis.plus.version>
+        <dynamic.datasource.version>3.1.1</dynamic.datasource.version>
         <velocity.version>2.2</velocity.version>
         <hutool.version>5.3.2</hutool.version>
         <p6spy.version>3.8.7</p6spy.version>
@@ -63,13 +64,6 @@
                 <version>${spring.cloud.alibaba.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-
-            <!--seata-->
-            <dependency>
-                <groupId>io.seata</groupId>
-                <artifactId>seata-all</artifactId>
-                <version>${seata.version}</version>
             </dependency>
 
             <!--定时任务框架依赖-->
@@ -123,6 +117,14 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis.plus.version}</version>
+            </dependency>
+
+
+            <!--dynamic datasource-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+                <version>${dynamic.datasource.version}</version>
             </dependency>
 
             <!--mybatis plus generator-->
