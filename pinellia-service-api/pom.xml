@@ -45,5 +45,13 @@
             <groupId>io.swagger</groupId>
             <artifactId>swagger-models</artifactId>
         </dependency>
+
+
+        <!--common-->
+        <dependency>
+            <groupId>com.ivan</groupId>
+            <artifactId>pinellia-common</artifactId>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>

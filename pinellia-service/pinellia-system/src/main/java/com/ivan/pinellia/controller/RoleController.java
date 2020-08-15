@@ -1,6 +1,7 @@
 package com.ivan.pinellia.controller;
 
 
+import com.baomidou.dynamic.datasource.annotation.DS;
 import com.ivan.pinellia.core.tool.api.R;
 import com.ivan.pinellia.entity.Role;
 import com.ivan.pinellia.entity.User;
@@ -27,6 +28,7 @@ public class RoleController {
     @Autowired
     private IRoleService roleService;
 
+    @DS("master")
     @PostMapping("/submit")
     public R submit(@RequestBody Role role) {
         return R.status(this.roleService.saveOrUpdate(role));

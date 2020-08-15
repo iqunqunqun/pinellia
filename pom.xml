@@ -166,6 +166,14 @@
                 <artifactId>swagger-models</artifactId>
                 <version>${swagger.models.version}</version>
             </dependency>
+
+            <!--common-->
+            <dependency>
+                <groupId>com.ivan</groupId>
+                <artifactId>pinellia-common</artifactId>
+                <scope>compile</scope>
+                <version>${common.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -183,11 +191,5 @@
             <version>${hutool.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>com.ivan</groupId>
-            <artifactId>pinellia-common</artifactId>
-            <scope>compile</scope>
-            <version>${common.version}</version>
-        </dependency>
     </dependencies>
 </project>

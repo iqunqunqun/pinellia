@@ -1,0 +1,14 @@
+# spring 配置
+spring:
+  application:
+    name: gateway-service
+
+  # 读取配置文件
+  profiles:
+    active: dev
+
+
+
+
+
+

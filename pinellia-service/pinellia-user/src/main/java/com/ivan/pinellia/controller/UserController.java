@@ -68,13 +68,14 @@ public class UserController {
         // 1.保存用户
         UserDTO userDTO = new UserDTO();
         userDTO.setUsername("测试用户");
+        userDTO.setPassword("234");
         this.userService.saveUser(userDTO);
 
         // 2.保存角色
         Role role = new Role();
         role.setRoleName("测试角色");
+        role.setRoleCode("test");
         this.systemClient.submit(role);
-
         return R.success(ResultCode.SUCCESS);
 
     }
