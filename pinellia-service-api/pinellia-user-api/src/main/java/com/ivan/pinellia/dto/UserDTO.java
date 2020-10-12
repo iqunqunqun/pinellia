@@ -7,6 +7,9 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CopyOnWriteArraySet;
+
 /**
  * <p></p>
  *
@@ -53,5 +56,7 @@ public class UserDTO {
     @ApiModelProperty(value = "0-正常，1-删除")
     @TableField("del_flag")
     private String delFlag;
+
+    private CopyOnWriteArrayList<String> arrayList;
 
 }

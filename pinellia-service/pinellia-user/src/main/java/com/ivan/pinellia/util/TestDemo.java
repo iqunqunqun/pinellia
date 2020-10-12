@@ -1,6 +1,17 @@
 package com.ivan.pinellia.util;
 
 import com.baomidou.dynamic.datasource.toolkit.CryptoUtils;
+import lombok.SneakyThrows;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 /**
  * <p></p>
@@ -11,10 +22,21 @@ import com.baomidou.dynamic.datasource.toolkit.CryptoUtils;
  */
 public class TestDemo {
 
-    public static void main(String[] args) throws Exception {
-        String password = "chenyifan";
+    public static int i = 0;
 
-        String encodePassword = CryptoUtils.encrypt(password);
-        System.out.println(encodePassword);
+    public static void main(String[] args) {
+
+
+        ExecutorService fixedThreadPool = Executors.newFixedThreadPool(10);
+
+        fixedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+
+            }
+        });
+
     }
+
+
 }

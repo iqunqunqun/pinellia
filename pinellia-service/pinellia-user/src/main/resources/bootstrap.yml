@@ -6,7 +6,9 @@ spring:
   # 读取配置文件
   profiles:
     active: dev
-
+  redis:
+    cluster:
+      nodes:
 
 
 

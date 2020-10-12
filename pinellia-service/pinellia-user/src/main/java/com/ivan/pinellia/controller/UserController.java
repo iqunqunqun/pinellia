@@ -13,9 +13,6 @@ import com.ivan.pinellia.wrapper.UserWrapper;
 import io.swagger.annotations.ApiOperation;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.redisson.api.RBucket;
-import org.redisson.api.RLock;
-import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -79,6 +76,9 @@ public class UserController {
         return R.success(ResultCode.SUCCESS);
 
     }
+
+
+
 
 }
 

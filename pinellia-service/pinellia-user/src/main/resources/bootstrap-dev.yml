@@ -8,7 +8,6 @@ spring:
         group: DEV_GROUP
         namespace: e08a2339-bb30-4141-870b-bd34157eaf60
 
-
       # 服务发现
       discovery:
         server-addr: 192.168.122.130:8848

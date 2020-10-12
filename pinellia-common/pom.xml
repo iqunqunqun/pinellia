@@ -66,6 +66,12 @@
             <groupId>io.swagger</groupId>
             <artifactId>swagger-models</artifactId>
         </dependency>
+
+        <!--Jedis-->
+        <dependency>
+            <groupId>redis.clients</groupId>
+            <artifactId>jedis</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
