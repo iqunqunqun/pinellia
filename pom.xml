@@ -43,7 +43,8 @@
         <seata.version>1.2.0</seata.version>
         <elasticjob.version>2.1.5</elasticjob.version>
         <curator-framework.version>2.11.0</curator-framework.version>
-        <redission.version>3.13.2</redission.version>
+        <redission.version>3.13.1</redission.version>
+        <jjwt.version>0.10.6</jjwt.version>
     </properties>
 
     <dependencyManagement>
@@ -139,6 +140,13 @@
                 <groupId>org.apache.velocity</groupId>
                 <artifactId>velocity-engine-core</artifactId>
                 <version>${velocity.version}</version>
+            </dependency>
+
+            <!--jwt-->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jjwt.version}</version>
             </dependency>
 
             <!-- redission -->

@@ -1,5 +1,6 @@
 package com.ivan.pinellia.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.ivan.pinellia.core.tool.api.IResultCode;
 import com.ivan.pinellia.core.tool.api.R;
 import com.ivan.pinellia.core.tool.api.ResultCode;
@@ -52,9 +53,19 @@ public class UserController {
 
     @ApiOperation("查询用户详情")
     @GetMapping("/detail/{id}")
-    public R detail(@PathVariable("id") Integer id) {
+    public R<UserVO> detail(@PathVariable("id") Integer id) {
         User user = this.userService.detail(id);
         return R.data(UserWrapper.build().entityVO(user));
+    }
+
+    /**
+     * 查询单条
+     */
+    @ApiOperation(value = "查看详情", notes = "传入id")
+    @GetMapping("/userInfo")
+    public R<UserVO> userInfo(User user) {
+        User detail = userService.getOne(new QueryWrapper<>(user));
+        return R.data(UserWrapper.build().entityVO(detail));
     }
 
 

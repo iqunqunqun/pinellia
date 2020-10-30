@@ -11,6 +11,9 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
+import java.util.HashSet;
+import java.util.Set;
+
 /**
  * <p>
  * 用户表
@@ -35,6 +38,9 @@ public class UserVO extends BaseEntity {
     @TableField("username")
     private String username;
 
+    @TableField("password")
+    private String password;
+
     @ApiModelProperty(value = "简介")
     @TableField("phone")
     private String phone;
@@ -55,5 +61,7 @@ public class UserVO extends BaseEntity {
     @TableField("del_flag")
     private String delFlag;
 
+    @ApiModelProperty("是否记住")
+    private Boolean isRememberMe;
 
 }

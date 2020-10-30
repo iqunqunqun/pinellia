@@ -1,0 +1,11 @@
+server:
+  port: 8830
+
+# spring 配置
+spring:
+  application:
+    name: auth-service
+
+  # 读取配置文件
+  profiles:
+    active: dev
