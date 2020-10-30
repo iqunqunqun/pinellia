@@ -2,9 +2,11 @@ package com.ivan.pinellia.security.jwt;
 
 
 import cn.hutool.core.util.StrUtil;
+import com.auth0.jwt.JWT;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -14,6 +16,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.jwt.Jwt;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -23,10 +26,8 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class TokenProvider implements InitializingBean {
-
-   private final Logger log = LoggerFactory.getLogger(TokenProvider.class);
-
    private static final String AUTHORITIES_KEY = "auth";
 
    private final String base64Secret;

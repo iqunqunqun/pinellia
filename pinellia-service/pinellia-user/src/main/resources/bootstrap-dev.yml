@@ -1,16 +1,18 @@
 spring:
   cloud:
     nacos:
-      # 服务配置
+      # nacos配置
       config:
-        server-addr: 192.168.122.130:8848
-        file-extension: yaml
+        server-addr: 39.101.193.232:8848
+        namespace: ea3f4920-0d18-4a51-85b2-3261bae7e1ed
         group: DEV_GROUP
-        namespace: e08a2339-bb30-4141-870b-bd34157eaf60
-
+        file-extension: yaml
+        ext-config[0]:
+          data-id : base-dev.yaml
+          group: DEV_GROUP
+          refresh: true
       # 服务发现
       discovery:
-        server-addr: 192.168.122.130:8848
-        namespace: e08a2339-bb30-4141-870b-bd34157eaf60
-
-
+        server-addr: 39.101.193.232:8848
+        namespace: ea3f4920-0d18-4a51-85b2-3261bae7e1ed
+        group: DEV_GROUP
