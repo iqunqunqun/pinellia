@@ -10,7 +10,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>pinellia-common</artifactId>
+    <packaging>pom</packaging>
     <version>1.0.0-SNAPSHOT</version>
+    <modules>
+        <module>pinellia-common-mybatis</module>
+        <module>pinellia-common-security</module>
+        <module>pinellia-common-core</module>
+    </modules>
 
     <dependencies>
         <!--spring web-->

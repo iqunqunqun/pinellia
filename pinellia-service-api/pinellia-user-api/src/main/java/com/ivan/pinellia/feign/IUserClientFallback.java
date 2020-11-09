@@ -1,6 +1,7 @@
 package com.ivan.pinellia.feign;
 
-import com.ivan.pinellia.core.tool.api.R;
+
+import com.ivan.pinellia.tool.api.R;
 import com.ivan.pinellia.vo.UserVO;
 
 /**

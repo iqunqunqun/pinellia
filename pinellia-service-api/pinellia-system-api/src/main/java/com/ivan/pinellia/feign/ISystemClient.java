@@ -1,6 +1,6 @@
 package com.ivan.pinellia.feign;
 
-import com.ivan.pinellia.core.tool.api.R;
+import com.ivan.pinellia.tool.api.R;
 import com.ivan.pinellia.entity.Role;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;

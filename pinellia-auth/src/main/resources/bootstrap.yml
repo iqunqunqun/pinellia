@@ -1,6 +1,3 @@
-server:
-  port: 8830
-
 # spring 配置
 spring:
   application:

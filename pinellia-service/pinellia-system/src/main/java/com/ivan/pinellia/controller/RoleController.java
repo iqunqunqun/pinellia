@@ -2,9 +2,8 @@ package com.ivan.pinellia.controller;
 
 
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.ivan.pinellia.core.tool.api.R;
+import com.ivan.pinellia.tool.api.R;
 import com.ivan.pinellia.entity.Role;
-import com.ivan.pinellia.entity.User;
 import com.ivan.pinellia.service.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

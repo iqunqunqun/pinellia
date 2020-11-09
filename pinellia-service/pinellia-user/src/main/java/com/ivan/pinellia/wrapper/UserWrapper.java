@@ -1,10 +1,8 @@
 package com.ivan.pinellia.wrapper;
 
 import cn.hutool.core.bean.BeanUtil;
-import com.ivan.pinellia.core.tool.utils.SpringUtil;
 import com.ivan.pinellia.entity.User;
 import com.ivan.pinellia.mybatis.support.BaseEntityWrapper;
-import com.ivan.pinellia.service.IUserService;
 import com.ivan.pinellia.vo.UserVO;
 
 /**

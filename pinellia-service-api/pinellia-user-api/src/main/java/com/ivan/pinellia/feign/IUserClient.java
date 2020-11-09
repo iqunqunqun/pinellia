@@ -1,8 +1,6 @@
 package com.ivan.pinellia.feign;
 
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.ivan.pinellia.core.tool.api.R;
-import com.ivan.pinellia.entity.User;
+import com.ivan.pinellia.tool.api.R;
 import com.ivan.pinellia.vo.UserVO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;

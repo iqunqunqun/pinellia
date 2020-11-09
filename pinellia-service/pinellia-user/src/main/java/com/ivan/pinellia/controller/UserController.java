@@ -1,14 +1,14 @@
 package com.ivan.pinellia.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.ivan.pinellia.core.tool.api.IResultCode;
-import com.ivan.pinellia.core.tool.api.R;
-import com.ivan.pinellia.core.tool.api.ResultCode;
+
 import com.ivan.pinellia.dto.UserDTO;
 import com.ivan.pinellia.entity.Role;
 import com.ivan.pinellia.entity.User;
 import com.ivan.pinellia.feign.ISystemClient;
 import com.ivan.pinellia.service.IUserService;
+import com.ivan.pinellia.tool.api.R;
+import com.ivan.pinellia.tool.api.ResultCode;
 import com.ivan.pinellia.vo.UserVO;
 import com.ivan.pinellia.wrapper.UserWrapper;
 import io.swagger.annotations.ApiOperation;
@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 /**
@@ -46,6 +46,9 @@ public class UserController {
     public R saveUser(@RequestBody UserDTO userDTO) {
 
         boolean saveFlag = this.userService.saveUser(userDTO);
+
+        ReentrantLock lock = new ReentrantLock();
+        lock.lock();
 
         return R.data(saveFlag);
     }
@@ -85,11 +88,6 @@ public class UserController {
         role.setRoleCode("test");
         this.systemClient.submit(role);
         return R.success(ResultCode.SUCCESS);
-
     }
-
-
-
-
 }
 
