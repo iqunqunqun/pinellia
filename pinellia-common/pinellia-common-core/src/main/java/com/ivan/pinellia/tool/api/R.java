@@ -1,6 +1,7 @@
 package com.ivan.pinellia.tool.api;
 
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.http.HttpStatus;
 import com.ivan.pinellia.constant.PinelliaConstant;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,8 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.lang.Nullable;
-
-import javax.servlet.http.HttpServletResponse;
 import java.io.Serializable;
 import java.util.Optional;
 
@@ -104,7 +103,7 @@ public class R<T> implements Serializable {
      * @return R
      */
     public static <T> R<T> data(T data, String msg) {
-        return data(HttpServletResponse.SC_OK, data, msg);
+        return data(HttpStatus.HTTP_OK, data, msg);
     }
 
     /**

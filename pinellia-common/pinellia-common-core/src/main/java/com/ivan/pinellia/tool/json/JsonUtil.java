@@ -2,7 +2,6 @@ package com.ivan.pinellia.tool.json;
 
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.util.StrUtil;
-import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.json.JsonReadFeature;
@@ -164,11 +163,6 @@ public class JsonUtil {
 	 */
 	public static <T> List<T> parseArray(String content, Class<T> valueTypeRef) {
 		try {
-
-			if (!StrUtil.startWithIgnoreCase(content, StringPool.LEFT_SQ_BRACKET)) {
-				content = StringPool.LEFT_SQ_BRACKET + content + StringPool.RIGHT_SQ_BRACKET;
-			}
-
 			List<Map<String, Object>> list = getInstance().readValue(content, new TypeReference<List<Map<String, Object>>>() {
 			});
 			List<T> result = new ArrayList<>();

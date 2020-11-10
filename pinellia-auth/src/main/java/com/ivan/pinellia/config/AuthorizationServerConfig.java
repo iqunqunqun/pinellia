@@ -50,6 +50,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private final DataSource dataSource;
     private final AuthenticationManager authenticationManager;
     private final PineliiaUserDetailServiceImpl userDetailsService;
+    private final TokenStore inMemoryTokenStore;
 
     /**
      * 客户端信息配置
@@ -57,10 +58,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Override
     @SneakyThrows
     public void configure(ClientDetailsServiceConfigurer clients) {
-        JdbcClientDetailsService jdbcClientDetailsService = new JdbcClientDetailsService(dataSource);
-        jdbcClientDetailsService.setFindClientDetailsSql(SecurityConstants.DEFAULT_SELECT_STATEMENT);
-        jdbcClientDetailsService.setSelectClientDetailsSql(SecurityConstants.DEFAULT_FIND_STATEMENT);
-        clients.withClientDetails(jdbcClientDetailsService);
+        clients.inMemory()
+                .withClient("user")
+                .authorizedGrantTypes("password", "refresh_token")
+                .accessTokenValiditySeconds(1800)
+                .resourceIds("rid")
+                .scopes("all")
+                .secret("123456");
     }
 
     /**
@@ -68,20 +72,9 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
      */
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
-        List<TokenEnhancer> tokenEnhancers = new ArrayList<>();
-        tokenEnhancers.add(tokenEnhancer());
-        tokenEnhancers.add(jwtAccessTokenConverter());
-        tokenEnhancerChain.setTokenEnhancers(tokenEnhancers);
-
-        endpoints.authenticationManager(authenticationManager)
-                .accessTokenConverter(jwtAccessTokenConverter())
-                .tokenEnhancer(tokenEnhancerChain)
-                .userDetailsService(userDetailsService)
-                // refresh_token有两种使用方式：重复使用(true)、非重复使用(false)，默认为true
-                //      1.重复使用：access_token过期刷新时， refresh token过期时间未改变，仍以初次生成的时间为准
-                //      2.非重复使用：access_token过期刷新时， refresh_token过期时间延续，在refresh_token有效期内刷新而无需失效再次登录
-                .reuseRefreshTokens(false);
+        endpoints.tokenStore(inMemoryTokenStore) //配置令牌的存储（这里存放在内存中）
+                .authenticationManager(authenticationManager)
+                .userDetailsService(userDetailsService);
     }
 
     /**
