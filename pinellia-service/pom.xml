@@ -136,13 +136,6 @@
             <scope>test</scope>
         </dependency>
 
-
-        <dependency>
-            <groupId>com.ivan</groupId>
-            <artifactId>pinellia-common</artifactId>
-            <scope>compile</scope>
-        </dependency>
-
         <!--user api-->
         <dependency>
             <groupId>com.ivan</groupId>

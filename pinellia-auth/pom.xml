@@ -100,14 +100,20 @@
 
         <!--jwt-->
         <dependency>
-            <groupId>com.nimbusds</groupId>
-            <artifactId>nimbus-jose-jwt</artifactId>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-jose</artifactId>
         </dependency>
 
         <!--common security-->
         <dependency>
             <groupId>com.ivan</groupId>
             <artifactId>pinellia-common-security</artifactId>
+        </dependency>
+
+        <!--common core-->
+        <dependency>
+            <groupId>com.ivan</groupId>
+            <artifactId>pinellia-common-core</artifactId>
         </dependency>
 
         <!--user api-->
@@ -117,5 +123,6 @@
             <version>1.0.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
+
     </dependencies>
 </project>

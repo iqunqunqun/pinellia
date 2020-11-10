@@ -44,7 +44,6 @@
         <elasticjob.version>2.1.5</elasticjob.version>
         <curator-framework.version>2.11.0</curator-framework.version>
         <redission.version>3.13.1</redission.version>
-        <jwt.version>9.1.2</jwt.version>
     </properties>
 
     <dependencyManagement>
@@ -142,13 +141,6 @@
                 <version>${velocity.version}</version>
             </dependency>
 
-            <!--jwt-->
-            <dependency>
-                <groupId>com.nimbusds</groupId>
-                <artifactId>nimbus-jose-jwt</artifactId>
-                <version>${jwt.version}</version>
-            </dependency>
-
             <!-- redission -->
             <dependency>
                 <groupId>org.redisson</groupId>
@@ -175,14 +167,6 @@
                 <version>${swagger.models.version}</version>
             </dependency>
 
-            <!--common-->
-            <dependency>
-                <groupId>com.ivan</groupId>
-                <artifactId>pinellia-common</artifactId>
-                <scope>compile</scope>
-                <version>${common.version}</version>
-            </dependency>
-
             <!--common mybatis plus -->
             <dependency>
                 <groupId>com.ivan</groupId>
@@ -195,6 +179,14 @@
             <dependency>
                 <groupId>com.ivan</groupId>
                 <artifactId>pinellia-common-security</artifactId>
+                <version>${common.version}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <!--common core-->
+            <dependency>
+                <groupId>com.ivan</groupId>
+                <artifactId>pinellia-common-core</artifactId>
                 <version>${common.version}</version>
                 <scope>compile</scope>
             </dependency>
@@ -213,14 +205,6 @@
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
             <version>${hutool.version}</version>
-        </dependency>
-
-        <!--common core-->
-        <dependency>
-            <groupId>com.ivan</groupId>
-            <artifactId>pinellia-common-core</artifactId>
-            <version>${common.version}</version>
-            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

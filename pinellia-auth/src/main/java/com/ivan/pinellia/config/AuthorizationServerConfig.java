@@ -1,18 +1,38 @@
 package com.ivan.pinellia.config;
 
+import com.ivan.pinellia.constant.SecurityConstants;
+import com.ivan.pinellia.entity.User;
+import com.ivan.pinellia.security.jwt.JwtTokenEnhancer;
+import com.ivan.pinellia.service.PineliiaUserDetailServiceImpl;
+import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 
+import javax.sql.DataSource;
+import java.security.KeyPair;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -24,55 +44,88 @@ import java.util.concurrent.TimeUnit;
  */
 @Configuration
 @EnableAuthorizationServer
+@RequiredArgsConstructor
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    @Override
-    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+    private final DataSource dataSource;
+    private final AuthenticationManager authenticationManager;
+    private final PineliiaUserDetailServiceImpl userDetailsService;
 
-        // 定义了两个客户端应用的通行证
-        clients.inMemory()
-                .withClient("sheep1")
-                .secret(new BCryptPasswordEncoder().encode("123456"))
-                .authorizedGrantTypes("authorization_code", "refresh_token")
-                .scopes("all")
-                .autoApprove(false)
-                .and()
-                .withClient("sheep2")
-                .secret(new BCryptPasswordEncoder().encode("123456"))
-                .authorizedGrantTypes("authorization_code", "refresh_token")
-                .scopes("all")
-                .autoApprove(false);
+    /**
+     * 客户端信息配置
+     */
+    @Override
+    @SneakyThrows
+    public void configure(ClientDetailsServiceConfigurer clients) {
+        JdbcClientDetailsService jdbcClientDetailsService = new JdbcClientDetailsService(dataSource);
+        jdbcClientDetailsService.setFindClientDetailsSql(SecurityConstants.DEFAULT_SELECT_STATEMENT);
+        jdbcClientDetailsService.setSelectClientDetailsSql(SecurityConstants.DEFAULT_FIND_STATEMENT);
+        clients.withClientDetails(jdbcClientDetailsService);
     }
 
+    /**
+     * 配置授权（authorization）以及令牌（token）的访问端点和令牌服务(token services)
+     */
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
+        TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+        List<TokenEnhancer> tokenEnhancers = new ArrayList<>();
+        tokenEnhancers.add(tokenEnhancer());
+        tokenEnhancers.add(jwtAccessTokenConverter());
+        tokenEnhancerChain.setTokenEnhancers(tokenEnhancers);
 
-        endpoints.tokenStore(jwtTokenStore()).accessTokenConverter(jwtAccessTokenConverter());
-        DefaultTokenServices tokenServices = (DefaultTokenServices) endpoints.getDefaultAuthorizationServerTokenServices();
-        tokenServices.setTokenStore(endpoints.getTokenStore());
-        tokenServices.setSupportRefreshToken(true);
-        tokenServices.setClientDetailsService(endpoints.getClientDetailsService());
-        tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
-        tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(1)); // 一天有效期
-        endpoints.tokenServices(tokenServices);
+        endpoints.authenticationManager(authenticationManager)
+                .accessTokenConverter(jwtAccessTokenConverter())
+                .tokenEnhancer(tokenEnhancerChain)
+                .userDetailsService(userDetailsService)
+                // refresh_token有两种使用方式：重复使用(true)、非重复使用(false)，默认为true
+                //      1.重复使用：access_token过期刷新时， refresh token过期时间未改变，仍以初次生成的时间为准
+                //      2.非重复使用：access_token过期刷新时， refresh_token过期时间延续，在refresh_token有效期内刷新而无需失效再次登录
+                .reuseRefreshTokens(false);
     }
 
+    /**
+     * 允许表单认证
+     */
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
-        security.tokenKeyAccess("isAuthenticated()");
+    public void configure(AuthorizationServerSecurityConfigurer security) {
+        security.allowFormAuthenticationForClients();
     }
 
+    /**
+     * 使用非对称加密算法对token签名
+     */
     @Bean
-    public TokenStore jwtTokenStore() {
-        return new JwtTokenStore(jwtAccessTokenConverter());
-    }
-
-    @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter(){
+    public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("testKey");
+        converter.setKeyPair(keyPair());
         return converter;
     }
 
+    /**
+     * 从classpath下的密钥库中获取密钥对(公钥+私钥)
+     */
+    @Bean
+    public KeyPair keyPair() {
+        KeyStoreKeyFactory factory = new KeyStoreKeyFactory(
+                new ClassPathResource("youlai.jks"), "123456".toCharArray());
+        KeyPair keyPair = factory.getKeyPair(
+                "youlai", "123456".toCharArray());
+        return keyPair;
+    }
+
+    /**
+     * JWT内容增强
+     */
+    @Bean
+    public TokenEnhancer tokenEnhancer() {
+        return (accessToken, authentication) -> {
+            Map<String, Object> map = new HashMap<>(2);
+            User user = (User) authentication.getUserAuthentication().getPrincipal();
+            map.put("JWT_USER_ID_KEY", user.getUserId());
+            ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(map);
+            return accessToken;
+        };
+    }
 }
 

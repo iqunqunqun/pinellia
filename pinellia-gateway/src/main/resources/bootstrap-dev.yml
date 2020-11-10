@@ -1,17 +1,22 @@
 spring:
+
+  application:
+    name: gateway-service
+
   cloud:
     nacos:
       # 服务配置
       config:
-        server-addr: 192.168.122.130:8848
+        server-addr: 39.101.193.232:8848
         file-extension: yaml
         group: DEV_GROUP
-        namespace: e08a2339-bb30-4141-870b-bd34157eaf60
+        namespace: ea3f4920-0d18-4a51-85b2-3261bae7e1ed
 
 
       # 服务发现
       discovery:
-        server-addr: 192.168.122.130:8848
-        namespace: e08a2339-bb30-4141-870b-bd34157eaf60
+        server-addr: 39.101.193.232:8848
+        namespace: ea3f4920-0d18-4a51-85b2-3261bae7e1ed
+
 
 

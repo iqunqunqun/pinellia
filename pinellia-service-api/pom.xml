@@ -46,19 +46,17 @@
             <artifactId>swagger-models</artifactId>
         </dependency>
 
-
-        <!--common-->
-        <dependency>
-            <groupId>com.ivan</groupId>
-            <artifactId>pinellia-common</artifactId>
-            <scope>compile</scope>
-        </dependency>
-
         <!--common mybatis plus -->
         <dependency>
             <groupId>com.ivan</groupId>
             <artifactId>pinellia-common-mybatis</artifactId>
             <scope>compile</scope>
+        </dependency>
+
+        <!--common core-->
+        <dependency>
+            <groupId>com.ivan</groupId>
+            <artifactId>pinellia-common-core</artifactId>
         </dependency>
     </dependencies>
 </project>
