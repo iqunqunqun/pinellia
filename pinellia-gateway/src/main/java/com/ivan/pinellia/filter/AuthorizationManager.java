@@ -1,3 +1,4 @@
+/*
 package com.ivan.pinellia.filter;
 
 import cn.hutool.core.convert.Convert;
@@ -18,25 +19,23 @@ import org.springframework.util.AntPathMatcher;
 import org.springframework.util.PathMatcher;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
+*/
 /**
- * <p>鉴权管理器</p>
+ * <p></p>
  *
- * @author ivan
+ * @author chenyf
  * @className AuthorizationManager
- * @since 2020/11/10 22:36
- */
+ * @since 2020/11/11 14:54
+ *//*
+
 @Component
 @AllArgsConstructor
 @Slf4j
 public class AuthorizationManager implements ReactiveAuthorizationManager<AuthorizationContext> {
 
-    private final RedisTemplate redisTemplate;
-
+    private RedisTemplate redisTemplate;
 
     @Override
     public Mono<AuthorizationDecision> check(Mono<Authentication> mono, AuthorizationContext authorizationContext) {
@@ -44,37 +43,43 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
         String path = request.getURI().getPath();
         PathMatcher pathMatcher = new AntPathMatcher();
 
-        // 1. 对应跨域的预检请求直接放行
+        // 对应跨域的预检请求直接放行
         if (request.getMethod() == HttpMethod.OPTIONS) {
             return Mono.just(new AuthorizationDecision(true));
         }
 
-        // 2. token为空拒绝访问
+        // 非管理端路径无需鉴权直接放行
+        if (pathMatcher.match("/auth/**", path)) {
+            return Mono.just(new AuthorizationDecision(true));
+        }
+
+        // token为空拒绝访问
         String token = request.getHeaders().getFirst(SecurityConstants.JWT_TOKEN_HEADER);
         if (StrUtil.isBlank(token)) {
             return Mono.just(new AuthorizationDecision(false));
         }
 
-        // 3.缓存取资源权限角色关系列表
+        // 从缓存取资源权限角色关系列表
         Map<Object, Object> resourceRolesMap = redisTemplate.opsForHash().entries(SecurityConstants.RESOURCE_ROLES_KEY);
         Iterator<Object> iterator = resourceRolesMap.keySet().iterator();
 
         // 请求路径匹配到的资源需要的角色权限集合authorities统计
-        List<String> authorities = new ArrayList<>();
+        Set<String> authorities = new HashSet<>();
         while (iterator.hasNext()) {
             String pattern = (String) iterator.next();
             if (pathMatcher.match(pattern, path)) {
                 authorities.addAll(Convert.toList(String.class, resourceRolesMap.get(pattern)));
             }
         }
+
         Mono<AuthorizationDecision> authorizationDecisionMono = mono
                 .filter(Authentication::isAuthenticated)
                 .flatMapIterable(Authentication::getAuthorities)
                 .map(GrantedAuthority::getAuthority)
                 .any(roleId -> {
-                    // 3. roleId是请求用户的角色(格式:ROLE_{roleId})，authorities是请求资源所需要角色的集合
+                    // roleId是请求用户的角色(格式:ROLE_{roleId})，authorities是请求资源所需要角色的集合
                     log.info("访问路径：{}", path);
-                    log.info("用户角色roleId：{}", roleId);
+                    log.info("用户角色信息：{}", roleId);
                     log.info("资源需要权限authorities：{}", authorities);
                     return authorities.contains(roleId);
                 })
@@ -83,3 +88,4 @@ public class AuthorizationManager implements ReactiveAuthorizationManager<Author
         return authorizationDecisionMono;
     }
 }
+*/

@@ -2,13 +2,16 @@ package com.ivan.pinellia.config;
 
 import com.ivan.pinellia.constant.SecurityConstants;
 import com.ivan.pinellia.entity.User;
-import com.ivan.pinellia.security.jwt.JwtTokenEnhancer;
 import com.ivan.pinellia.service.PineliiaUserDetailServiceImpl;
+import com.ivan.pinellia.service.PinelliaClientDetailsServiceImpl;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +29,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import javax.sql.DataSource;
 import java.security.KeyPair;
@@ -44,81 +48,63 @@ import java.util.concurrent.TimeUnit;
  */
 @Configuration
 @EnableAuthorizationServer
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    private final DataSource dataSource;
-    private final AuthenticationManager authenticationManager;
-    private final PineliiaUserDetailServiceImpl userDetailsService;
-    private final TokenStore inMemoryTokenStore;
+    private DataSource dataSource;
 
-    /**
-     * 客户端信息配置
-     */
+    private AuthenticationManager authenticationManager;
+
+    private PineliiaUserDetailServiceImpl userDetailsService;
+
+    private final RedisConnectionFactory redisConnectionFactory;
+
     @Override
-    @SneakyThrows
-    public void configure(ClientDetailsServiceConfigurer clients) {
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+
+        // 定义了两个客户端应用的通行证
         clients.inMemory()
                 .withClient("user")
-                .authorizedGrantTypes("password", "refresh_token")
-                .accessTokenValiditySeconds(1800)
-                .resourceIds("rid")
+                .secret(new BCryptPasswordEncoder().encode("123456"))
+                .authorizedGrantTypes("authorization_code", "refresh_token")
                 .scopes("all")
-                .secret("123456");
+                .autoApprove(false)
+                .and()
+                .withClient("gateway")
+                .secret(new BCryptPasswordEncoder().encode("123456"))
+                .authorizedGrantTypes("authorization_code", "refresh_token")
+                .scopes("all")
+                .autoApprove(false);
     }
 
-    /**
-     * 配置授权（authorization）以及令牌（token）的访问端点和令牌服务(token services)
-     */
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-        endpoints.tokenStore(inMemoryTokenStore) //配置令牌的存储（这里存放在内存中）
-                .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService);
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+
+        endpoints.tokenStore(jwtTokenStore()).accessTokenConverter(jwtAccessTokenConverter());
+        DefaultTokenServices tokenServices = (DefaultTokenServices) endpoints.getDefaultAuthorizationServerTokenServices();
+        tokenServices.setTokenStore(endpoints.getTokenStore());
+        tokenServices.setSupportRefreshToken(true);
+        tokenServices.setClientDetailsService(endpoints.getClientDetailsService());
+        tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
+        tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(1)); // 一天有效期
+        endpoints.tokenServices(tokenServices);
     }
 
-    /**
-     * 允许表单认证
-     */
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer security) {
-        security.allowFormAuthenticationForClients();
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+        security.tokenKeyAccess("isAuthenticated()");
     }
 
-    /**
-     * 使用非对称加密算法对token签名
-     */
     @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
+    public TokenStore jwtTokenStore() {
+        return new JwtTokenStore(jwtAccessTokenConverter());
+    }
+
+    @Bean
+    public JwtAccessTokenConverter jwtAccessTokenConverter(){
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setKeyPair(keyPair());
+        converter.setSigningKey("testKey");
         return converter;
-    }
-
-    /**
-     * 从classpath下的密钥库中获取密钥对(公钥+私钥)
-     */
-    @Bean
-    public KeyPair keyPair() {
-        KeyStoreKeyFactory factory = new KeyStoreKeyFactory(
-                new ClassPathResource("youlai.jks"), "123456".toCharArray());
-        KeyPair keyPair = factory.getKeyPair(
-                "youlai", "123456".toCharArray());
-        return keyPair;
-    }
-
-    /**
-     * JWT内容增强
-     */
-    @Bean
-    public TokenEnhancer tokenEnhancer() {
-        return (accessToken, authentication) -> {
-            Map<String, Object> map = new HashMap<>(2);
-            User user = (User) authentication.getUserAuthentication().getPrincipal();
-            map.put("JWT_USER_ID_KEY", user.getUserId());
-            ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(map);
-            return accessToken;
-        };
     }
 }
 

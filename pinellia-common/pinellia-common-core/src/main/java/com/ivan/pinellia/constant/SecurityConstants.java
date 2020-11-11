@@ -40,6 +40,11 @@ public interface SecurityConstants {
     String RESOURCE_ROLES_KEY = "auth:resourceRoles";
 
     /**
+     * oauth 缓存前缀
+     */
+    String PROJECT_OAUTH_ACCESS = "pinellia_oauth:access:";
+
+    /**
      * 黑名单token前缀
      */
     String TOKEN_BLACKLIST_PREFIX = "auth:token:blacklist:";
@@ -89,7 +94,7 @@ public interface SecurityConstants {
     /**
      * JdbcClientDetailsService 查询语句
      */
-    String BASE_FIND_STATEMENT = "select " + CLIENT_FIELDS + " from sys_oauth_client_details";
+    String BASE_FIND_STATEMENT = "select " + CLIENT_FIELDS + " from oauth_client_details";
 
     /**
      * 默认的查询语句

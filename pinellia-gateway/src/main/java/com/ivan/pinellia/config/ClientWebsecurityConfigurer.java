@@ -11,14 +11,14 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * <p></p>
  *
  * @author chenyf
- * @className UserWebsecurityConfigurer
- * @since 2020/10/30 17:05
+ * @className ClientWebsecurityConfigurer
+ * @since 2020/11/11 17:46
  */
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableOAuth2Sso
-public class UserWebsecurityConfigurer extends WebSecurityConfigurerAdapter {
+public class ClientWebsecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
@@ -26,5 +26,3 @@ public class UserWebsecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated();
     }
 }
-
-
