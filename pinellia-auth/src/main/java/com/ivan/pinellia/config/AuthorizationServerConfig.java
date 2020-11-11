@@ -48,29 +48,20 @@ import java.util.concurrent.TimeUnit;
  */
 @Configuration
 @EnableAuthorizationServer
-@AllArgsConstructor
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
-
-    private DataSource dataSource;
-
-    private AuthenticationManager authenticationManager;
-
-    private PineliiaUserDetailServiceImpl userDetailsService;
-
-    private final RedisConnectionFactory redisConnectionFactory;
 
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
 
         // 定义了两个客户端应用的通行证
         clients.inMemory()
-                .withClient("user")
+                .withClient("sheep1")
                 .secret(new BCryptPasswordEncoder().encode("123456"))
                 .authorizedGrantTypes("authorization_code", "refresh_token")
                 .scopes("all")
                 .autoApprove(false)
                 .and()
-                .withClient("gateway")
+                .withClient("sheep2")
                 .secret(new BCryptPasswordEncoder().encode("123456"))
                 .authorizedGrantTypes("authorization_code", "refresh_token")
                 .scopes("all")
@@ -106,5 +97,5 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
         converter.setSigningKey("testKey");
         return converter;
     }
-}
 
+}
