@@ -21,15 +21,5 @@ import java.util.Map;
 @RestController
 public class TokenController {
 
-    @Autowired
-    private KeyPair keyPair;
-
-    @GetMapping("/rsa/publicKey")
-    public Map<String, Object> getKey() {
-        RSAPublicKey publicKey = (RSAPublicKey) keyPair.getPublic();
-        RSAKey key = new RSAKey.Builder(publicKey).build();
-        return new JWKSet(key).toJSONObject();
-    }
-
 
 }

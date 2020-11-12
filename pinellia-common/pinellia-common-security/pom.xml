@@ -18,6 +18,18 @@
             <artifactId>spring-boot-starter-security</artifactId>
         </dependency>
 
+        <!--spring security oauth2-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+        </dependency>
+
+        <!--dynamic datasource-->
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>dynamic-datasource-spring-boot-starter</artifactId>
+        </dependency>
+
         <!-- user-api -->
         <dependency>
             <groupId>com.ivan</groupId>
