@@ -1,4 +1,4 @@
-package com.ivan.pinellia.handler;
+package com.ivan.pinellia.component;
 
 import cn.hutool.json.JSONUtil;
 import com.ivan.pinellia.tool.api.R;

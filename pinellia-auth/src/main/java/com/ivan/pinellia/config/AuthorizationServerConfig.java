@@ -1,19 +1,20 @@
 package com.ivan.pinellia.config;
 
 import com.baomidou.dynamic.datasource.annotation.DS;
-import com.google.common.collect.Lists;
 import com.ivan.pinellia.constant.SecurityConstants;
 import com.ivan.pinellia.entity.User;
-import com.ivan.pinellia.security.jwt.JwtTokenEnhancer;
 import com.ivan.pinellia.service.PineliiaUserDetailServiceImpl;
-import com.ivan.pinellia.service.PinelliaClientDetailServiceImpl;
+import com.ivan.pinellia.service.PinelliaClientDetailsServiceImpl;
 import com.ivan.pinellia.service.PinelliaUser;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.token.TokenService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -25,10 +26,14 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.*;
+import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 import javax.sql.DataSource;
 import java.security.KeyPair;
@@ -47,105 +52,86 @@ import java.util.concurrent.TimeUnit;
  */
 @Configuration
 @EnableAuthorizationServer
-@RequiredArgsConstructor
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
-
-    @Autowired
-    private DataSource dataSource;
-
-    @Autowired
-    private PinelliaClientDetailServiceImpl clientDetailService;
 
     @Autowired
     private AuthenticationManager authenticationManager;
 
     @Autowired
-    private PineliiaUserDetailServiceImpl userDetailsService;
+    private PinelliaClientDetailsServiceImpl clientDetailsService;
+
+    @Autowired
+    private PineliiaUserDetailServiceImpl userDetailService;
 
     @Autowired
     private TokenStore tokenStore;
 
     @Autowired
-    private JwtAccessTokenConverter jwtAccessTokenConverter;
+    private TokenEnhancer tokenEnhancer;
 
-    /**
-     * 客户端信息配置
-     */
+    @Autowired
+    private RedisTokenStore redisTokenStore;
+
+    @Autowired
+    private AuthorizationServerTokenServices tokenService;
+
     @Override
-    @SneakyThrows
-    public void configure(ClientDetailsServiceConfigurer clients) {
-        PinelliaClientDetailServiceImpl clientDetailService = new PinelliaClientDetailServiceImpl(dataSource);
-        clients.withClientDetails(clientDetailService);
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        clients.withClientDetails(clientDetailsService);
     }
 
-    /**
-     * 配置授权（authorization）以及令牌（token）的访问端点和令牌服务(token services)
-     */
     @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
-
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
         endpoints
+                .tokenServices(tokenService)
+                .userDetailsService(userDetailService)
                 .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService)
-                .tokenServices(tokenService())
+                .tokenStore(tokenStore)
+                .tokenEnhancer(tokenEnhancer)
+                .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
+                // refresh token有两种使用方式：重复使用(true)、非重复使用(false)，默认为true
+                //      1 重复使用：access token过期刷新时， refresh token过期时间未改变，仍以初次生成的时间为准
+                //      2 非重复使用：access token过期刷新时， refresh token过期时间延续，在refresh token有效期内刷新便永不失效达到无需再次登录的目的
                 .reuseRefreshTokens(false);
     }
 
-
-    /**
-     * 允许表单认证
-     */
     @Override
-    public void configure(AuthorizationServerSecurityConfigurer security) {
+    public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
         security
-                .checkTokenAccess("permitAll()")
                 .tokenKeyAccess("permitAll()")
+                .checkTokenAccess("permitAll()")
                 .allowFormAuthenticationForClients();
     }
 
     @Bean
     public AuthorizationServerTokenServices tokenService() {
-
-        List<TokenEnhancer> tokenEnhancersList = Lists.newArrayList();
-        tokenEnhancersList.add(tokenEnhancer());
-        tokenEnhancersList.add(jwtAccessTokenConverter);
-
-        TokenEnhancerChain enhancerChain = new TokenEnhancerChain();
-        enhancerChain.setTokenEnhancers(tokenEnhancersList);
-
-
         DefaultTokenServices tokenServices = new DefaultTokenServices();
-        tokenServices.setClientDetailsService(clientDetailService);
-        tokenServices.setTokenEnhancer(enhancerChain);
         tokenServices.setTokenStore(tokenStore);
-        tokenServices.setAuthenticationManager(authenticationManager);
-        tokenServices.setAccessTokenValiditySeconds(60 * 60 * 10);
+        tokenServices.setAccessTokenValiditySeconds(1);
+        tokenServices.setRefreshTokenValiditySeconds(1);
         tokenServices.setSupportRefreshToken(true);
-        tokenServices.setRefreshTokenValiditySeconds(60 * 60 * 10);
-        tokenServices.setReuseRefreshToken(false);
 
         return tokenServices;
     }
 
-    /**
-     * JWT内容增强
-     */
+
     @Bean
     public TokenEnhancer tokenEnhancer() {
         return (accessToken, authentication) -> {
-            Map<String, Object> map = new HashMap<>(2);
-            PinelliaUser user = (PinelliaUser) authentication.getUserAuthentication().getPrincipal();
-            map.put("userId", user.getUserId());
-            map.put("username", user.getUsername());
-            ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(map);
+            Map<String, Object> additionalInfo = new HashMap<>(4);
+
+            PinelliaUser pinelliaUser = (PinelliaUser) authentication.getUserAuthentication().getPrincipal();
+            additionalInfo.put(SecurityConstants.DETAILS_USER_ID, pinelliaUser.getUserId());
+            additionalInfo.put(SecurityConstants.DETAILS_USERNAME, pinelliaUser.getUsername());
+
+            ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
             return accessToken;
         };
     }
 
     public static void main(String[] args) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encode = passwordEncoder.encode("123456");
+        String encode = new BCryptPasswordEncoder().encode("123456");
         System.out.println("encode = " + encode);
     }
-}
 
+}

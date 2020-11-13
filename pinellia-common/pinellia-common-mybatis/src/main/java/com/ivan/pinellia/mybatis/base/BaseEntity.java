@@ -1,11 +1,10 @@
 package com.ivan.pinellia.mybatis.base;
 
-import cn.hutool.core.date.DateUtil;
+
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
+
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

@@ -1,10 +1,11 @@
 package com.ivan.pinellia.filter;
 
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.StrUtil;
+import cn.hutool.crypto.SecureUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.ivan.pinellia.constant.SecurityConstants;
-import com.ivan.pinellia.tool.api.IResultCode;
 import com.ivan.pinellia.tool.api.R;
 import com.ivan.pinellia.tool.api.ResultCode;
 import com.nimbusds.jose.JWSObject;
@@ -22,53 +23,57 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.security.authorization.AuthorizationDecision;
+import org.springframework.security.authorization.ReactiveAuthorizationManager;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
+import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+import org.springframework.security.web.server.authorization.AuthorizationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 
 /**
- * 黑名单token过滤器
+ * <p></p>
+ *
+ * @author chenyf
+ * @className AuthGlobalFilter
+ * @since 2020/11/13 10:34
  */
 @Component
 @Slf4j
 public class AuthGlobalFilter implements GlobalFilter, Ordered {
 
-    @Autowired
-    private RedisTemplate redisTemplate;
 
-    @SneakyThrows
+    @Autowired
+    private RedisTokenStore tokenStore;
+
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         String token = exchange.getRequest().getHeaders().getFirst(SecurityConstants.JWT_TOKEN_HEADER);
+
+        log.info("================================");
+        log.info("uri-{}", exchange.getRequest().getURI());
+        log.info("token-{}",token);
+        log.info("================================");
         if (StrUtil.isBlank(token)) {
             return chain.filter(exchange);
         }
+
         token = token.replace(SecurityConstants.JWT_TOKEN_PREFIX, Strings.EMPTY);
-        JWSObject jwsObject = JWSObject.parse(token);
-        String payload = jwsObject.getPayload().toString();
 
-        // 黑名单token(登出、修改密码)校验
-        JSONObject jsonObject = JSONUtil.parseObj(payload);
-        String jti = jsonObject.getStr("jti"); // JWT唯一标识
+        OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
 
-        Boolean isBlack = redisTemplate.hasKey(SecurityConstants.TOKEN_BLACKLIST_PREFIX + jti);
-        if (isBlack) {
-            ServerHttpResponse response = exchange.getResponse();
-            response.setStatusCode(HttpStatus.OK);
-            response.getHeaders().set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
-            response.getHeaders().set("Access-Control-Allow-Origin", "*");
-            response.getHeaders().set("Cache-Control", "no-cache");
-            String body = JSONUtil.toJsonStr(R.fail(ResultCode.UN_AUTHORIZED));
-            DataBuffer buffer = response.bufferFactory().wrap(body.getBytes(Charset.forName("UTF-8")));
-            return response.writeWith(Mono.just(buffer));
-        }
+        System.out.println("oAuth2AccessToken = " + oAuth2AccessToken);
 
-        ServerHttpRequest request = exchange.getRequest().mutate()
-                .header(SecurityConstants.JWT_PAYLOAD_KEY, payload)
-                .build();
-        exchange = exchange.mutate().request(request).build();
         return chain.filter(exchange);
     }
 

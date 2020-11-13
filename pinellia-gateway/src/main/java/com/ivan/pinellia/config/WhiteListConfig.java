@@ -1,5 +1,13 @@
 package com.ivan.pinellia.config;
 
+/**
+ * <p></p>
+ *
+ * @author chenyf
+ * @className WhiteListConfig
+ * @since 2020/11/13 10:19
+ */
+
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
