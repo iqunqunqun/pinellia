@@ -3,9 +3,10 @@ spring:
     active: dev
 
 
-
   security:
     oauth2:
       resourceserver:
         jwt:
           jwk-set-uri: ${auth-server}/oauth/token_key
+
+

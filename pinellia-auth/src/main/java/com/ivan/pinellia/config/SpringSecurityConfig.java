@@ -52,12 +52,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
 
         http
-                .requestMatchers().antMatchers("/oauth/**","/login/**","/logout/**")
+                .authorizeRequests().requestMatchers(EndpointRequest.toAnyEndpoint()).permitAll()
                 .and()
-                .authorizeRequests()
-                .antMatchers("/oauth/**").authenticated()
+                .authorizeRequests().antMatchers("/auth/**").permitAll()
                 .and()
-                .formLogin().permitAll();
+                .authorizeRequests().anyRequest().permitAll()
+                .and()
+                .csrf().disable();
     }
 
     @Override
