@@ -1,10 +1,10 @@
 package com.ivan.pinellia.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 
 /**
  * <p></p>
@@ -16,19 +16,13 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @Configuration
 public class TokenConfig {
 
-    @Bean
-    public TokenStore tokenStore() {
-
-        JwtTokenStore jwtTokenStore = new JwtTokenStore(jwtAccessTokenConverter());
-
-        return jwtTokenStore;
-    }
+    @Autowired
+    private RedisConnectionFactory redisConnectionFactory;
 
     @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        JwtAccessTokenConverter tokenConverter = new JwtAccessTokenConverter();
-        tokenConverter.setSigningKey("auth");
-        return tokenConverter;
+    public RedisTokenStore tokenStore() {
+        return new RedisTokenStore(redisConnectionFactory);
     }
+
 
 }

@@ -26,19 +26,13 @@ import org.springframework.stereotype.Component;
 @Configuration
 public class TokenConfig {
 
-    @Bean
-    public TokenStore tokenStore() {
-
-        JwtTokenStore jwtTokenStore = new JwtTokenStore(jwtAccessTokenConverter());
-
-        return jwtTokenStore;
-    }
+    @Autowired
+    private RedisConnectionFactory redisConnectionFactory;
 
     @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        JwtAccessTokenConverter tokenConverter = new JwtAccessTokenConverter();
-        tokenConverter.setSigningKey("auth");
-        return tokenConverter;
+    public RedisTokenStore tokenStore() {
+        return new RedisTokenStore(redisConnectionFactory);
     }
+
 
 }

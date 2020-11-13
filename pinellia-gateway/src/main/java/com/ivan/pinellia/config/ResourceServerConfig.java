@@ -33,14 +33,13 @@ import reactor.core.publisher.Mono;
 @EnableWebFluxSecurity
 public class ResourceServerConfig {
 
-        @Autowired
-        private JwtAccessTokenConverter jwtAccessTokenConverter;
-
         @Bean
         public SecurityWebFilterChain webFluxSecurityFilterChain(ServerHttpSecurity http) {
+
             return http.authorizeExchange()
                     .pathMatchers("/auth/**").permitAll()
-                    .anyExchange().authenticated()
+                    .and()
+                    .authorizeExchange().anyExchange().authenticated()
                     .and().csrf().disable().build();
         }
 

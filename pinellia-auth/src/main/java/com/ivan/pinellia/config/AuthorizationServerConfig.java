@@ -70,7 +70,7 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private TokenEnhancer tokenEnhancer;
 
     @Autowired
-    private JwtAccessTokenConverter jwtAccessTokenConverter;
+    private RedisTokenStore redisTokenStore;
 
     @Autowired
     private AuthorizationServerTokenServices tokenService;
@@ -86,10 +86,8 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
                 .tokenServices(tokenService)
                 .userDetailsService(userDetailService)
                 .authenticationManager(authenticationManager)
-                .accessTokenConverter(jwtAccessTokenConverter)
                 .tokenStore(tokenStore)
                 .tokenEnhancer(tokenEnhancer)
-                .accessTokenConverter(jwtAccessTokenConverter)
                 .allowedTokenEndpointRequestMethods(HttpMethod.GET, HttpMethod.POST)
                 // refresh token有两种使用方式：重复使用(true)、非重复使用(false)，默认为true
                 //      1 重复使用：access token过期刷新时， refresh token过期时间未改变，仍以初次生成的时间为准

@@ -12,9 +12,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.common.exceptions.InvalidTokenException;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.endpoint.CheckTokenEndpoint;
 import org.springframework.security.oauth2.provider.endpoint.TokenEndpoint;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
@@ -37,46 +39,21 @@ import java.util.Map;
 public class TokenController {
 
     @Autowired
-    private TokenEndpoint tokenEndpoint;
-
-    @Autowired
-    private CheckTokenEndpoint checkTokenEndpoint;
-
-    @Autowired
-    private TokenStore tokenStore;
+    private RedisTokenStore redisTokenStore;
 
     @SneakyThrows
-    @GetMapping("/check")
-    public R check(@RequestParam String token) {
-
-        OAuth2AccessToken oAuth2AccessToken = tokenStore.readAccessToken(token);
-
-        if (oAuth2AccessToken == null) {
-            throw new InvalidTokenException("Token was not recognised");
-        }
-
-        if (oAuth2AccessToken.isExpired()) {
-            throw new InvalidTokenException("Token has expired");
-        }
-
-        log.info(oAuth2AccessToken.getValue());
-
-        return R.data(checkTokenEndpoint.checkToken(oAuth2AccessToken.getValue()));
-    }
-
-    @SneakyThrows
-    @DeleteMapping("/logout")
+    @DeleteMapping("/token/logout")
     public R logout(HttpServletRequest request) {
 
         String token = request.getHeader(SecurityConstants.JWT_TOKEN_HEADER);
 
         String jwt = token.replace(SecurityConstants.JWT_TOKEN_PREFIX, StrUtil.EMPTY);
 
-        OAuth2AccessToken auth2AccessToken = tokenStore.readAccessToken(jwt);
+        OAuth2Authentication authentication = redisTokenStore.readAuthentication(jwt);
 
-        tokenStore.removeAccessToken(auth2AccessToken);
+        redisTokenStore.removeAccessToken(jwt);
 
-        return R.data(checkTokenEndpoint.checkToken(token));
+        return R.data(jwt);
     }
 
 
