@@ -2,6 +2,7 @@ package com.ivan.pinellia.feign;
 
 
 import com.ivan.pinellia.tool.api.R;
+import com.ivan.pinellia.vo.UserInfo;
 import com.ivan.pinellia.vo.UserVO;
 
 /**
@@ -18,7 +19,7 @@ public class IUserClientFallback implements IUserClient {
     }
 
     @Override
-    public R<UserVO> userInfo(String userName) {
+    public R<UserInfo> userInfo(String userName) {
         return null;
     }
 }

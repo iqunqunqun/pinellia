@@ -64,13 +64,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private PineliiaUserDetailServiceImpl userDetailService;
 
     @Autowired
-    private TokenStore tokenStore;
+    private RedisTokenStore tokenStore;
 
     @Autowired
     private TokenEnhancer tokenEnhancer;
-
-    @Autowired
-    private RedisTokenStore redisTokenStore;
 
     @Autowired
     private AuthorizationServerTokenServices tokenService;
@@ -123,14 +120,13 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
             PinelliaUser pinelliaUser = (PinelliaUser) authentication.getUserAuthentication().getPrincipal();
             additionalInfo.put(SecurityConstants.DETAILS_USER_ID, pinelliaUser.getUserId());
             additionalInfo.put(SecurityConstants.DETAILS_USERNAME, pinelliaUser.getUsername());
-
             ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
             return accessToken;
         };
     }
 
     public static void main(String[] args) {
-        String encode = new BCryptPasswordEncoder().encode("123456");
+        String encode = new BCryptPasswordEncoder().encode("pinellia");
         System.out.println("encode = " + encode);
     }
 

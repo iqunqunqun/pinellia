@@ -58,5 +58,6 @@
             <groupId>com.ivan</groupId>
             <artifactId>pinellia-common-core</artifactId>
         </dependency>
+
     </dependencies>
 </project>

@@ -1,5 +1,6 @@
 package com.ivan.pinellia.controller;
 
+import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 
 import com.ivan.pinellia.dto.UserDTO;
@@ -9,12 +10,14 @@ import com.ivan.pinellia.feign.ISystemClient;
 import com.ivan.pinellia.service.IUserService;
 import com.ivan.pinellia.tool.api.R;
 import com.ivan.pinellia.tool.api.ResultCode;
+import com.ivan.pinellia.vo.UserInfo;
 import com.ivan.pinellia.vo.UserVO;
 import com.ivan.pinellia.wrapper.UserWrapper;
 import io.swagger.annotations.ApiOperation;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.concurrent.locks.ReentrantLock;
@@ -47,15 +50,13 @@ public class UserController {
 
         boolean saveFlag = this.userService.saveUser(userDTO);
 
-        ReentrantLock lock = new ReentrantLock();
-        lock.lock();
-
         return R.data(saveFlag);
     }
 
 
     @ApiOperation("查询用户详情")
     @GetMapping("/detail/{id}")
+    @PreAuthorize("@auth.hasAuth('ROLE_TEST')")
     public R<UserVO> detail(@PathVariable("id") Integer id) {
         User user = this.userService.detail(id);
         return R.data(UserWrapper.build().entityVO(user));
@@ -66,9 +67,18 @@ public class UserController {
      */
     @ApiOperation(value = "查看详情", notes = "传入id")
     @GetMapping("/userInfo")
-    public R<UserVO> userInfo(User user) {
+    public R<UserInfo> userInfo(User user) {
+        UserInfo userInfo = new UserInfo();
         User detail = userService.getOne(new QueryWrapper<>(user));
-        return R.data(UserWrapper.build().entityVO(detail));
+
+        if (ObjectUtil.isNotNull(detail)) {
+            userInfo.setUser(detail);
+            userInfo.setPermissions(new String[0]);
+            userInfo.setRoles(new String[]{"ROLE_ADMIN"});
+            return R.data(userInfo);
+        }
+
+        return R.data(userInfo);
     }
 
 

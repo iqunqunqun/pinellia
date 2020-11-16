@@ -1,6 +1,8 @@
 package com.ivan.pinellia.feign;
 
 import com.ivan.pinellia.tool.api.R;
+import com.ivan.pinellia.tool.feign.FeignConfiguration;
+import com.ivan.pinellia.vo.UserInfo;
 import com.ivan.pinellia.vo.UserVO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @since 2020/10/30 13:49
  */
 
-@FeignClient("user-service")
+@FeignClient(value = "user-service", fallback = IUserClientFallback.class)
 public interface IUserClient {
 
     String USER_SERVICE_PREFIX = "/user";
@@ -36,5 +38,5 @@ public interface IUserClient {
      */
     @ApiOperation(value = "查看详情", notes = "传入id")
     @GetMapping(USER_SERVICE_PREFIX + "/userInfo")
-    R<UserVO> userInfo(@RequestParam("userName") String userName);
+    R<UserInfo> userInfo(@RequestParam("userName") String userName);
 }

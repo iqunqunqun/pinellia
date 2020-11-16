@@ -58,7 +58,7 @@ public class R<T> implements Serializable {
         this.code = code;
         this.data = data;
         this.msg = msg;
-        this.success = ResultCode.SUCCESS.code == code;
+        this.success = HttpStatus.HTTP_OK == code;
     }
 
     /**

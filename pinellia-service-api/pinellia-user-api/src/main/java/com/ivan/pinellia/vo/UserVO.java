@@ -41,27 +41,6 @@ public class UserVO extends BaseEntity {
     @TableField("password")
     private String password;
 
-    @ApiModelProperty(value = "简介")
-    @TableField("phone")
-    private String phone;
 
-    @ApiModelProperty(value = "头像")
-    @TableField("avatar")
-    private String avatar;
-
-    @ApiModelProperty(value = "部门ID")
-    @TableField("dept_id")
-    private Integer deptId;
-
-    @ApiModelProperty(value = "0-正常，9-锁定")
-    @TableField("lock_flag")
-    private String lockFlag;
-
-    @ApiModelProperty(value = "0-正常，1-删除")
-    @TableField("del_flag")
-    private String delFlag;
-
-    @ApiModelProperty("是否记住")
-    private Boolean isRememberMe;
 
 }

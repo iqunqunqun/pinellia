@@ -10,16 +10,6 @@ package com.ivan.pinellia.constant;
 public interface SecurityConstants {
 
     /**
-     * JWT存储权限前缀
-     */
-    String AUTHORITY_PREFIX = "ROLE_";
-
-    /**
-     * JWT存储权限属性
-     */
-    String AUTHORITY_CLAIM_NAME = "authorities";
-
-    /**
      * 认证信息Http请求头
      */
     String JWT_TOKEN_HEADER = "Authorization";
@@ -34,15 +24,6 @@ public interface SecurityConstants {
      */
     String JWT_PAYLOAD_KEY = "payload";
 
-    /**
-     * Redis缓存权限规则key
-     */
-    String RESOURCE_ROLES_KEY = "auth:resourceRoles";
-
-    /**
-     * oauth 缓存前缀
-     */
-    String PROJECT_OAUTH_ACCESS = "pinellia_oauth:access:";
 
     /**
      * 黑名单token前缀
@@ -53,11 +34,6 @@ public interface SecurityConstants {
      * 前缀
      */
     String PROJECT_PREFIX = "pinellia_";
-
-    /**
-     * 项目的license
-     */
-    String PROJECT_LICENSE = "made by pig";
 
     /**
      * 内部
@@ -72,7 +48,7 @@ public interface SecurityConstants {
     /**
      * 默认登录URL
      */
-    String OAUTH_TOKEN_URL = "/oauth/token";
+    String OAUTH_LOGIN_URL = "/auth/oauth/token";
 
     /**
      * grant_type

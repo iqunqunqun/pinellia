@@ -1,12 +1,17 @@
 package com.ivan.pinellia.service;
 
+import cn.hutool.core.collection.CollectionUtil;
+import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.core.util.StrUtil;
+import com.ivan.pinellia.entity.User;
 import com.ivan.pinellia.feign.IUserClient;
+import com.ivan.pinellia.vo.UserInfo;
 import com.ivan.pinellia.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +19,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
+import java.util.*;
 
 /**
  * <p></p>
@@ -33,11 +38,10 @@ public class PineliiaUserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        UserInfo userInfo = userClient.userInfo(username).getData();
 
-        UserVO userVO = userClient.userInfo(username).getData();
-
-        if (ObjectUtil.isNotNull(userVO)) {
-            return getUserDetails(userVO);
+        if (ObjectUtil.isNotNull(userInfo)) {
+            return getUserDetails(userInfo);
         }
 
         throw new UsernameNotFoundException("用户不存在");
@@ -45,14 +49,21 @@ public class PineliiaUserDetailServiceImpl implements UserDetailsService {
 
     /**
      * 组装登录用户信息
-     * @param userVO
+     * @param userInfo
      * @return
      */
-    private PinelliaUser getUserDetails(UserVO userVO) {
+    private PinelliaUser getUserDetails(UserInfo userInfo) {
 
-        Collection<? extends GrantedAuthority> noAuthorities = AuthorityUtils.NO_AUTHORITIES;
+        User user = userInfo.getUser();
 
-        return new PinelliaUser(userVO.getUserId(), userVO.getUsername(), userVO.getPassword(), StrUtil.equals(userVO.getLockFlag(), "0"), true, true, true, noAuthorities);
+        Set<String> set = new HashSet<>();
+
+        CollectionUtil.addAll(set, userInfo.getPermissions());
+        CollectionUtil.addAll(set, userInfo.getRoles());
+
+        Collection<? extends GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(set.toArray(new String[0]));
+
+        return new PinelliaUser(user.getUserId(), user.getUsername(), user.getPassword(), true, true, true, true, authorities);
     }
 
 
