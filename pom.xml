@@ -14,6 +14,8 @@
         <module>pinellia-service-api</module>
         <module>pinellia-auth</module>
         <module>pinellia-gateway</module>
+        <module>pinellia-message</module>
+        <module>pinellia-flow</module>
     </modules>
 
     <parent>
@@ -43,6 +45,7 @@
         <elasticjob.version>2.1.5</elasticjob.version>
         <curator-framework.version>2.11.0</curator-framework.version>
         <redission.version>3.13.1</redission.version>
+        <flow.version>5.22.0</flow.version>
     </properties>
 
     <dependencyManagement>
@@ -189,6 +192,19 @@
                 <version>${common.version}</version>
                 <scope>compile</scope>
             </dependency>
+
+            <dependency>
+                <groupId>org.activiti</groupId>
+                <artifactId>activiti-spring-boot-starter-basic</artifactId>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.mybatis</groupId>
+                        <artifactId>mybatis</artifactId>
+                    </exclusion>
+                </exclusions>
+                <version>${flow.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
