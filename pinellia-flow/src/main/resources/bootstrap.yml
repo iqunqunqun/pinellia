@@ -1,5 +1,4 @@
 spring:
-  profiles: dev
+  profiles:
+    active: dev
 
-  application:
-    name: flow-service

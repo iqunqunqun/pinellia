@@ -2,7 +2,6 @@ package com.ivan.pinellia.util;
 
 import cn.hutool.core.util.RandomUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.spring.SpringUtil;
 import com.google.common.collect.Lists;
 import com.ivan.pinellia.constant.FlowConstant;
 import com.ivan.pinellia.constant.PinelliaConstant;
@@ -11,11 +10,13 @@ import com.ivan.pinellia.model.ApprovalFlowVO;
 import com.ivan.pinellia.model.FlowMessage;
 import com.ivan.pinellia.model.FlowNodeVO;
 import com.ivan.pinellia.service.IFlowCustomService;
+import com.ivan.pinellia.tool.utils.SpringUtil;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.activiti.bpmn.BpmnAutoLayout;
 import org.activiti.bpmn.model.*;
+
 import org.activiti.bpmn.model.Process;
 import org.activiti.engine.ProcessEngine;
 import org.activiti.engine.ProcessEngines;
@@ -449,5 +450,90 @@ public class FlowUtil {
         EndEvent endEvent = new EndEvent();
         endEvent.setId(FlowConstant.FLOW_END_EVENT);
         return endEvent;
+    }
+
+    public static void main(String[] args) {
+        ApprovalFlowVO one = new ApprovalFlowVO();
+        // ID
+        one.setApproverStaffId(1);
+
+        // 审批人类型（0-指定人，1-1级上级，2-2级上级）
+        one.setApproverType(0);
+
+        // 审批节点序号
+        one.setNodeNumber(0);
+
+        // 节点类型（0.顺序,1.会签节点,2.或签节点）
+        one.setNodeType(0);
+
+        ApprovalFlowVO two = new ApprovalFlowVO();
+        // ID
+        two.setApproverStaffId(2);
+
+        // 审批人类型（0-指定人，1-1级上级，2-2级上级）
+        two.setApproverType(0);
+
+        // 审批节点序号
+        two.setNodeNumber(1);
+
+        // 节点类型（0.顺序,1.会签节点,2.或签节点）
+        two.setNodeType(1);
+
+        ApprovalFlowVO three = new ApprovalFlowVO();
+        // ID
+        three.setApproverStaffId(3);
+
+        // 审批人类型（0-指定人，1-1级上级，2-2级上级）
+        three.setApproverType(0);
+
+        // 审批节点序号
+        three.setNodeNumber(1);
+
+        // 节点类型（0.顺序,1.会签节点,2.或签节点）
+        three.setNodeType(1);
+
+        ApprovalFlowVO four = new ApprovalFlowVO();
+        // ID
+        four.setApproverStaffId(4);
+
+        // 审批人类型（0-指定人，1-1级上级，2-2级上级）
+        four.setApproverType(0);
+
+        // 审批节点序号
+        four.setNodeNumber(2);
+
+        // 节点类型（0.顺序,1.会签节点,2.或签节点）
+        four.setNodeType(2);
+
+        ApprovalFlowVO five = new ApprovalFlowVO();
+        // ID
+        five.setApproverStaffId(5);
+
+        // 审批人类型（0-指定人，1-1级上级，2-2级上级）
+        five.setApproverType(0);
+
+        // 审批节点序号
+        five.setNodeNumber(2);
+
+        // 节点类型（0.顺序,1.会签节点,2.或签节点）
+        five.setNodeType(2);
+
+        ApprovalFlowVO six = new ApprovalFlowVO();
+        // ID
+        six.setApproverStaffId(6);
+
+        // 审批人类型（0-指定人，1-1级上级，2-2级上级）
+        six.setApproverType(0);
+
+        // 审批节点序号
+        six.setNodeNumber(3);
+
+        // 节点类型（0.顺序,1.会签节点,2.或签节点）
+        six.setNodeType(0);
+
+
+        ArrayList<ApprovalFlowVO> list = Lists.newArrayList(one, two, three, four, five, six);
+
+        FlowUtil.initProcess(list);
     }
 }
