@@ -11,6 +11,7 @@ import com.ivan.pinellia.service.IUserService;
 import com.ivan.pinellia.tool.api.R;
 import com.ivan.pinellia.tool.api.ResultCode;
 import com.ivan.pinellia.tool.api.annotation.CustomResponse;
+import com.ivan.pinellia.tool.redis.lock.DistributedLock;
 import com.ivan.pinellia.vo.UserInfo;
 import com.ivan.pinellia.vo.UserVO;
 import com.ivan.pinellia.wrapper.UserWrapper;
@@ -59,6 +60,7 @@ public class UserController {
     @GetMapping("/detail/{id}")
     @PreAuthorize("@auth.hasAuth('ROLE_ADMIN')")
     @CustomResponse
+    @DistributedLock(key = "user:detail")
     public UserVO detail(@PathVariable("id") Integer id) {
         User user = this.userService.detail(id);
         return UserWrapper.build().entityVO(user);

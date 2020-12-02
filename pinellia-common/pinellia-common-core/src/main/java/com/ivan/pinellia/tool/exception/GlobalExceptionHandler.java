@@ -21,4 +21,9 @@ public class GlobalExceptionHandler {
         return R.fail(e.getMessage());
     }
 
+    @ExceptionHandler(BizException.class)
+    public R handleBizException(BizException e) {
+        return R.fail(e.getMessage());
+    }
+
 }
