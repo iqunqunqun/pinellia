@@ -1,4 +1,4 @@
-package com.ivan.pinellia;
+package com.ivan.pinellia.model;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

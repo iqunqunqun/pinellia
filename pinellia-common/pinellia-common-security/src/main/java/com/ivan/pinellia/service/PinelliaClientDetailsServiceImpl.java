@@ -18,7 +18,13 @@ import javax.sql.DataSource;
 
 @Component
 public class PinelliaClientDetailsServiceImpl extends JdbcClientDetailsService {
+
     public PinelliaClientDetailsServiceImpl(DataSource dataSource) {
         super(dataSource);
+    }
+
+    @Override
+    public ClientDetails loadClientByClientId(String clientId) throws InvalidClientException {
+        return super.loadClientByClientId(clientId);
     }
 }

@@ -10,6 +10,7 @@ import com.ivan.pinellia.feign.ISystemClient;
 import com.ivan.pinellia.service.IUserService;
 import com.ivan.pinellia.tool.api.R;
 import com.ivan.pinellia.tool.api.ResultCode;
+import com.ivan.pinellia.tool.api.annotation.CustomResponse;
 import com.ivan.pinellia.vo.UserInfo;
 import com.ivan.pinellia.vo.UserVO;
 import com.ivan.pinellia.wrapper.UserWrapper;
@@ -56,10 +57,11 @@ public class UserController {
 
     @ApiOperation("查询用户详情")
     @GetMapping("/detail/{id}")
-    @PreAuthorize("@auth.hasAuth('ROLE_TEST')")
-    public R<UserVO> detail(@PathVariable("id") Integer id) {
+    @PreAuthorize("@auth.hasAuth('ROLE_ADMIN')")
+    @CustomResponse
+    public UserVO detail(@PathVariable("id") Integer id) {
         User user = this.userService.detail(id);
-        return R.data(UserWrapper.build().entityVO(user));
+        return UserWrapper.build().entityVO(user);
     }
 
     /**
@@ -67,7 +69,8 @@ public class UserController {
      */
     @ApiOperation(value = "查看详情", notes = "传入id")
     @GetMapping("/userInfo")
-    public R<UserInfo> userInfo(User user) {
+    @CustomResponse
+    public UserInfo userInfo(User user) {
         UserInfo userInfo = new UserInfo();
         User detail = userService.getOne(new QueryWrapper<>(user));
 
@@ -75,10 +78,10 @@ public class UserController {
             userInfo.setUser(detail);
             userInfo.setPermissions(new String[0]);
             userInfo.setRoles(new String[]{"ROLE_ADMIN"});
-            return R.data(userInfo);
+            return userInfo;
         }
 
-        return R.data(userInfo);
+        return userInfo;
     }
 
 

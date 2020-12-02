@@ -1,3 +1,4 @@
+
 # spring 配置
 spring:
   application:
@@ -6,3 +7,4 @@ spring:
   # 读取配置文件
   profiles:
     active: dev
+

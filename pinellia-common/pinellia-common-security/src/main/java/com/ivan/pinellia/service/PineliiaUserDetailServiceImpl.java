@@ -1,17 +1,13 @@
 package com.ivan.pinellia.service;
 
 import cn.hutool.core.collection.CollectionUtil;
-import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
-import cn.hutool.core.util.StrUtil;
 import com.ivan.pinellia.entity.User;
 import com.ivan.pinellia.feign.IUserClient;
 import com.ivan.pinellia.vo.UserInfo;
-import com.ivan.pinellia.vo.UserVO;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -38,6 +34,7 @@ public class PineliiaUserDetailServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
         UserInfo userInfo = userClient.userInfo(username).getData();
 
         if (ObjectUtil.isNotNull(userInfo)) {

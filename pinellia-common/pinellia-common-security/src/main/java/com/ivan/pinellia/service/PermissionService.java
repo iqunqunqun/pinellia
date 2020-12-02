@@ -34,10 +34,10 @@ public class PermissionService {
 
         if (ObjectUtil.isNotNull(authentication) || CollectionUtil.isEmpty(authentication.getAuthorities())) {
 
-            log.info("**********************************");
+            log.info("*****************Authority Scope*****************");
             log.info("[所需权限] - {}", permission);
             log.info("[当前权限] - {}", authentication.getAuthorities().toString());
-            log.info("**********************************");
+            log.info("*****************Authority Scope*****************");
 
             Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
             return authorities.stream().anyMatch(p -> p.getAuthority().equals(permission));
